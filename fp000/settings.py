@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'fp000.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'fp000',
+        'USER': 'root',
+        'PASSWORD': 'coldplayINK1',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 

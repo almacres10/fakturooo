@@ -1,9 +1,10 @@
 from django.urls import path
-
+from .views import DetailDataView
 from . import views
 
 app_name = "faktur"
 
 urlpatterns = [
-    path("<int:id>/", views.faktur2022, name="faktur")
+    path("", views.index, name="index"),
+    path('detail/<int:pk>/', DetailDataView.as_view(), name='detail'),
 ]

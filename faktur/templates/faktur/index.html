@@ -1,1 +1,11 @@
-{{ faktur.npwp_penjual }}
+{% comment %} {{ faktur.NO_FAKTUR }} {% endcomment %}
+
+{% if latest_faktur %}
+    <ul>
+    {% for faktur in latest_faktur %}
+        <li><a href="/detail/{{ faktur.ID_PEMBELI }}/">{{ faktur.NAMA_PEMBELI }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
