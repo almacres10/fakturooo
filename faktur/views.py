@@ -12,3 +12,14 @@ class DetailDataView(DetailView):
     template_name = 'faktur/detail.html'
     context_object_name = 'data'
 
+def items(request):
+    query = request.GET.get('query', '')
+    items = Faktur2022.objects.all()
+
+    if query:
+        items = items.filter(Q(NAMA_PEMBELI__icontains=query))
+
+    return render(request, 'faktur/items.html', {
+        'query': query,
+        'items': items, 
+    })

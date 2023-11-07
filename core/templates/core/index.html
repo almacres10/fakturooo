@@ -7,7 +7,14 @@
 <div class="mt-6 px-6 py-12 bg-gray-200 rounded-xl">
     <h2 class="mb-12 text-2xl text-center">Newest Faktur</h2>
 
-    <div class="grid grid-cols-5 gap-3">
+    <form method="get" action="{% url 'faktur:items' %}">
+        <input name="query" class="w-full py-4 px-6 border rounded-xl" type="text" value="{{  query }}"
+        placeholder="Find what you want..">
+  
+        <button class="mt-2 py-4 px-8 text-lg bg-teal-500 text-white rounded-xl">Search</button>
+    </form>
+
+    <div class="grid grid-cols-5 gap-3 pt-5">
         {% for fp in latest_faktur %}
         <div class="w-full">
             <a href="{% url 'faktur:detail' fp.ID_PEMBELI %}">

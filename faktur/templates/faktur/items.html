@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %} 
+{% block title %}Faktur{% endblock %} 
+{% block content %}
+<div class="pb-6">
+
+  <div class="col-span-1 flex items-center justify-center">
+    <form method="get" action="{% url 'faktur:items' %}" class="text-center">
+      <input name="query" class="w-full py-2 px-4 border rounded-lg search-input" type="text" value="{{ query }}" placeholder="Find what you want..">
+      <button class="ml-2 py-2 px-4 text-lg bg-teal-500 text-white rounded-lg">Search</button>
+      <a href="{% url 'faktur:items' %}" class="ml-2 py-2 px-4 text-lg bg-yellow-500 text-white rounded-lg reset-button">Reset</a>
+    </form>
+  </div>
+  
+
+
+  <div class="col-span-3">
+    <div>
+      {% if query %}
+        {% if items %}
+            {% for faktur in items %}
+            <div>
+                <a href="{% url 'faktur:detail' faktur.ID_PEMBELI %}">
+                    <div class="p-3 bg-white rounded-b-xl">
+                        <h2 class="text-lg">{{ faktur.NOMOR_FAKTUR }}</h2>
+                        <p class="text-slate-900">{{ faktur.NAMA_PEMBELI }}</p>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+      {% endif %}
+    </div>
+</div>
+
+  {% endblock %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const resetButton = document.querySelector('.reset-button');
+        const searchInput = document.querySelector('.search-input');
+
+        resetButton.addEventListener('click', function () {
+            searchInput.value = '';  // Menghapus nilai dari input pencarian
+        });
+    });
+</script>

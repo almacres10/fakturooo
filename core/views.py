@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.contrib.auth import logout
+from django.shortcuts import render, redirect
 from faktur.models import Faktur2022
 from django.views.generic.detail import DetailView
 
@@ -10,3 +11,7 @@ def index(request):
         "latest_faktur": latest_faktur,
         }
     return render(request, "core/index.html", context)
+
+def user_logout(request):
+    logout(request)
+    return redirect('core:index')

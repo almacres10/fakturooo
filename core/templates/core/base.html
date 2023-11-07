@@ -12,25 +12,21 @@
 <body>
 
     <nav class="py-6 px-6 flex justify-between items-center border-b border-gray-200">
-        <a href="/" class="text-3xl font-semibold">Mini Faktur 000</a>
+        <a href="/" class="text-2xl font-semibold">Mini Faktur 000</a>
 
         <div class="space-x-6">
-            {% comment %} <input class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
-            type="search" name="search" placeholder="Search"> {% endcomment %}
-            {% comment %} <input class="focus:ring-2 focus:ring-blue-500 focus:outline-none appearance-none text-sm leading-6 text-slate-900 placeholder-slate-400 rounded-md py-2 pl-10 ring-1 ring-slate-200 shadow-sm" type="text" aria-label="Search Items" placeholder="Cari item...">
-
-            <a href="{% url 'item:new' %}" class="text-lg font-semibold hover:text-gray-500">New Item</a>
-            <a href="{% url 'item:items' %}" class="text-lg font-semibold hover:text-gray-500">Browse</a>
+            <a href="" class="text-lg font-semibold hover:text-gray-500">New Item</a>
+            <a href="{% url 'faktur:items' %}" class="text-lg font-semibold hover:text-gray-500">Browse</a>
 
             {% if request.user.is_authenticated %}
-            <a href="{% url 'conversation:inbox' %}" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Inbox</a>
-            <a href="{% url 'dashboard:index' %}" class="px-6 py-3 text-lg font-semibold bg-gray-500 text-white rounded-xl hover:bg-teal-700">Dashboard</a>
-            <a href="{% url 'core:user_logout' %}" class="px-6 py-3 text-lg font-semibold bg-lime-500 text-white rounded-xl hover:bg-lime-700">Log out</a>
+            <a href="" class="px-5 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Inbox</a>
+            <a href="" class="px-5 py-3 text-lg font-semibold bg-gray-500 text-white rounded-xl hover:bg-teal-700">Dashboard</a>
+            <a href="" class="px-5 py-3 text-lg font-semibold bg-lime-500 text-white rounded-xl hover:bg-lime-700">Log out</a>
             {% else %}
 
-            <a href="{% url 'core:signup' %}" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Sign up</a>
+            <a href="" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Sign up</a>
             <a href="{% url 'core:login' %}" class="px-6 py-3 text-lg font-semibold bg-gray-500 text-white rounded-xl hover:bg-teal-700">Log in</a>
-            {% endif %} {% endcomment %}
+            {% endif %}
         </div> 
     </nav>
 
