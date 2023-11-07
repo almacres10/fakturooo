@@ -9,7 +9,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=Roboto:wght@100&display=swap" rel="stylesheet">
     <title>{% block title%} {% endblock %} | App Faktur 000</title>
 </head>
-<body>
+
+<body class="flex flex-col min-h-screen">
 
     <nav class="py-6 px-6 flex justify-between items-center border-b border-gray-200">
         <a href="/" class="text-2xl font-semibold">Mini Faktur 000</a>
@@ -30,11 +31,11 @@
         </div> 
     </nav>
 
-    <div class="px-6 py-6">
+    <div class="flex-grow px-6 py-6">
         {% block content %}
         {% endblock %}
     </div>
-</body>
+
 
 <footer class="py-6 px-6 flex justify-between bg-gray-800">
     <div class="w-2/3 pr-10">
@@ -54,5 +55,5 @@
 </footer>
 
 {% comment %} <script type="text/javascript" src="{% static 'js/script.js' %}"></script> {% endcomment %}
-
+</body>
 </html>
