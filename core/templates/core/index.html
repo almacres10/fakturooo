@@ -1,0 +1,24 @@
+{% extends 'core/base.html' %}
+
+{% block title %} Welcome {% endblock %}
+
+{% block content %}
+{% comment %} Item terbaru {% endcomment %}
+<div class="mt-6 px-6 py-12 bg-gray-200 rounded-xl">
+    <h2 class="mb-12 text-2xl text-center">Newest Faktur</h2>
+
+    <div class="grid grid-cols-5 gap-3">
+        {% for fp in latest_faktur %}
+        <div class="w-full">
+            <a href="{% url 'faktur:detail' fp.ID_PEMBELI %}">
+                <div class="p-6 bg-white rounded-b-xl">
+                    <p class="text-gray-500">Nama Pembeli : {{ fp.NAMA_PEMBELI }}
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
