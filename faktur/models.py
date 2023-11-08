@@ -36,7 +36,7 @@ class Faktur2022(models.Model):
     KODE_OBJEK = models.CharField(max_length=255, null=True)
 
     class Meta:
-        db_table = 'fp000_detil_2022'  # Nama tabel dalam database
+        db_table = 'faktur_2022'  # Nama tabel dalam database
 
     def __str__(self):
         return self.NO_FAKTUR
