@@ -8,9 +8,9 @@
       <input name="query" class="w-full py-2 px-4 border rounded-lg search-input" type="text" value="{{ query }}" placeholder="Find what you want..">
       <button class="ml-2 py-2 px-4 text-lg bg-teal-500 text-white rounded-lg">Search</button>
       <a href="{% url 'faktur:items' %}" class="ml-2 py-2 px-4 text-lg bg-yellow-500 text-white rounded-lg reset-button">Reset</a>
+      <a href="{% url 'faktur:download_items' %}" class="ml-2 py-2 px-4 text-lg bg-slate-500 text-white rounded-lg reset-button">Download</a>
     </form>
   </div>
-  
 
 
   <div class="col-span-3">
@@ -19,12 +19,18 @@
             {% if items %} {% endcomment %}
                 {% for faktur in page_obj %}
                     <div>
-                        <a href="{% url 'faktur:detail' faktur.ID_PEMBELI %}">
-                            <div class="p-3 bg-white rounded-b-xl">
-                                <h2 class="text-lg">{{ faktur.NOMOR_FAKTUR }}</h2>
-                                <p class="text-slate-900">{{ faktur.NAMA_PEMBELI }}</p>
-                            </div>
-                        </a>
+                        <thead>
+                            <tr>
+                                <th>NOMOR FAKTUR</th>
+                                <th>NAMA PEMBELI</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="{% url 'faktur:detail' faktur.ID_PEMBELI %}">{{ faktur.NOMOR_FAKTUR }}</td>
+                                <td>{{ faktur.NAMA_PEMBELI }}</td>
+                            </tr>
+                        </tbody>
                     </div>
                 {% endfor %}
             {% comment %} {% else %}

@@ -4,7 +4,7 @@ from . models import Faktur2022
 from django.db.models import Q
 from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+import csv
 
 
 
@@ -35,7 +35,7 @@ def items(request):
     items = Faktur2022.objects.all()
 
     if query:
-        items = items.filter(Q(NAMA_PEMBELI__icontains=query))
+        items = items.filter(Q(NAMA_PEMBELI__icontains=query))[:20]
 
     items_per_page = 10
     paginator = Paginator(items, items_per_page)
@@ -51,3 +51,27 @@ def items(request):
     return render(request, 'faktur/items.html', {
         "page_obj": page_obj
     })
+
+def download_items(request):
+    query = request.GET.get('query', '')
+    items = Faktur2022.objects.all()
+
+    if query:
+        items = items.filter(Q(NAMA_PEMBELI__icontains=query))
+
+    # Create a CSV response
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="items.csv"'
+
+    # Create a CSV writer and write the header
+    writer = csv.writer(response)
+    writer.writerow(['ID_PEMBELI','NO_FAKTUR','TGL_FAKTUR','ID_MS_TH_PJK','NPWP_PENJUAL','NAMA_PENJUAL',
+                     'ALAMAT_PENJUAL','NPWP_PEMBELI','NAMA_PEMBELI','ALAMAT_PEMBELI','JML_BARANG','NAMA_BARANG',
+                     'JML_DPP','JML_PPN'])
+
+    # Write data to the CSV file
+    for item in items:
+        writer.writerow([item.ID_PEMBELI,item.NO_FAKTUR,item.TGL_FAKTUR,item.ID_MS_TH_PJK,item.NPWP_PENJUAL,item.NAMA_PENJUAL,
+                         item.ALAMAT_PENJUAL,item.NPWP_PEMBELI,item.NAMA_PEMBELI,item.ALAMAT_PEMBELI,item.JML_BARANG,item.NAMA_BARANG,
+                         item.JML_DPP,item.JML_PPN]) 
+    return response
