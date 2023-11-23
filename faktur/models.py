@@ -40,3 +40,18 @@ class Faktur2022(models.Model):
 
     def __str__(self):
         return self.NO_FAKTUR
+    
+class RekapFaktur000(models.Model):
+    id_pembeli = models.AutoField(primary_key=True, null=False)
+    nama_pembeli = models.CharField(max_length=255, null=True)
+    alamat_pembeli = models.CharField(max_length=255, null=True)
+    thpj = models.CharField(max_length=255, null=True)
+    lbr_faktur = models.FloatField(null=True)
+    nil_dpp = models.FloatField(null=True)
+    nil_ppn = models.FloatField(null=True)
+
+    class Meta:
+        db_table = 'fp_000_rekap'
+
+    def __str__(self):
+        return self.nama_pembeli

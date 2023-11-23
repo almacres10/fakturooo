@@ -1,23 +1,45 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Data Detail</title>
-</head>
-<body>
-    <h1>Data Detail</h1>
-    <p>ID: {{ data.ID_PEMBELI }}</p>
-    <p>Nomor Faktur: {{ data.NO_FAKTUR }}</p>
-    <p>Tanggal Faktur: {{ data.TGL_FAKTUR }}</p>
-    <p>Masa Tahun Pajak: {{ data.ID_MS_TH_PJK }}</p>
-    <p>NPWP Penjual: {{ data.NPWP_PENJUAL }}</p>
-    <p>Nama Penjual: {{ data.NAMA_PENJUAL }}</p>
-    <p>Alamat Penjual: {{ data.ALAMAT_PENJUAL }}</p>
-    <p>NPWP Pembeli: {{ data.NPWP_PEMBELI }}</p>
-    <p>Nama Pembeli: {{ data.NAMA_PEMBELI }}</p>
-    <p>Alamat Pembeli: {{ data.ALAMAT_PEMBELI }}</p>
-    <p>Jumlah Barang: {{ data.JML_BARANG }}</p>
-    <p>Nama Barang: {{ data.NAMA_BARANG }}</p>
-    <p>DPP: {{ data.JML_DPP }}</p>
-    <p>PPN: {{ data.JML_PPN }}</p>
-</body>
-</html>
+<!-- faktur/detail.html -->
+
+{% extends 'core/base.html' %}
+
+{% block content %}
+  <h2>Daftar Faktur untuk {{ page_obj_detail.0.NAMA_PEMBELI }}</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nomor Faktur</th>
+        <th>NAMA PEMBELI</th>
+        <!-- tambahkan kolom lain sesuai kebutuhan -->
+      </tr>
+    </thead>
+    <tbody>
+      {% for faktur in page_obj_detail  %}
+        <tr>
+          <td>{{ faktur.NO_FAKTUR }}</td>
+          <td>{{ faktur.NAMA_PEMBELI }}</td>
+          <!-- tambahkan kolom lain sesuai kebutuhan -->
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Tampilkan pagination jika perlu -->
+  <div class="pagination">
+    <span class="step-links">
+      {% if items.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ items.previous_page_number }}">previous</a>
+      {% endif %}
+
+      <span class="current">
+        Page {{ items.number }} of {{ items.paginator.num_pages }}.
+      </span>
+
+      {% if items.has_next %}
+        <a href="?page={{ items.next_page_number }}">next</a>
+        <a href="?page={{ items.paginator.num_pages }}">last &raquo;</a>
+      {% endif %}
+    </span>
+  </div>
+{% endblock %}
