@@ -3,7 +3,7 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-  <h2>Daftar Faktur untuk {{ page_obj_detail.0.NAMA_PEMBELI }}</h2>
+  <h2>Daftar Faktur untuk {{ data_pembeli_list.0.NAMA_PEMBELI }}</h2>
 
   <table>
     <thead>
@@ -14,12 +14,11 @@
       </tr>
     </thead>
     <tbody>
-      {% for faktur in page_obj_detail  %}
-        <tr>
-          <td>{{ faktur.NO_FAKTUR }}</td>
-          <td>{{ faktur.NAMA_PEMBELI }}</td>
-          <!-- tambahkan kolom lain sesuai kebutuhan -->
-        </tr>
+
+
+      {% for pembeli in data_pembeli_list %}
+          <p>{{ pembeli.NAMA_PEMBELI }}</p>
+          <!-- Tampilkan data lainnya sesuai kebutuhan -->
       {% endfor %}
     </tbody>
   </table>

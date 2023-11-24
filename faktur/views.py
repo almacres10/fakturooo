@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import csv
+from django.http import Http404
 
 
 
@@ -37,27 +38,26 @@ def items(request):
         "page_obj": page_obj
     })
 
-def itemsFaktur(request):
-    # Dapatkan nilai 'nama_pembeli' dari parameter URL
-    nama_pembeli = request.GET.get('nama_pembeli', '')
-    
-    # Gunakan nilai 'nama_pembeli' dalam filter queryset
-    items = Faktur2022.objects.all()
-    if nama_pembeli:
-        items = items.filter(Q(nama_pembeli__icontains=nama_pembeli))
+def itemsFaktur(request, nama_pembeli):
+    # Mendapatkan semua objek yang sesuai dengan kriteria pencarian
+    data_pembeli_list = Faktur2022.objects.filter(NAMA_PEMBELI=nama_pembeli)
 
-    items_per_page = 20
-    paginator = Paginator(items, items_per_page)
-    
-    page_number = request.GET.get('page')
-    try:
-        page_obj = paginator.page(page_number)
-    except PageNotAnInteger:
-        page_obj = paginator.page(1)
-    except EmptyPage:
-        page_obj = paginator.page(paginator.num_pages)
+    # Menyusun data untuk dilewatkan ke template
+    context = {
+        'data_pembeli_list': data_pembeli_list,
+    }
 
-    return render(request, 'faktur/detail.html', {
-        "page_obj_detail": page_obj,
-        "nama_pembeli": nama_pembeli  # Sertakan nilai nama_pembeli dalam konteks
-    })
+    return render(request, 'faktur/detail.html', context)
+
+# def itemsFaktur(request):
+#     nama_pembeli_data = request.GET.get('nama_pembeli', '')
+
+#     if nama_pembeli_data:
+#         data_pembeli_list = Faktur2022.objects.filter(NAMA_PEMBELI=nama_pembeli_data)
+#         print(data_pembeli_list)  # Tambahkan ini untuk debug
+
+#         context = {'data_pembeli_list': data_pembeli_list}
+#         return render(request, 'faktur/detail.html', context)
+#     else:
+#         return render(request, 'faktur/missing_parameter.html')
+
