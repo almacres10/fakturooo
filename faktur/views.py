@@ -38,9 +38,25 @@ def items(request):
         "page_obj": page_obj
     })
 
-def itemsFaktur(request, nama_pembeli):
-    # Mendapatkan semua objek yang sesuai dengan kriteria pencarian
-    data_pembeli_list = Faktur2022.objects.filter(NAMA_PEMBELI=nama_pembeli)
+def itemsFaktur(request, id_pembeli):
+    rekap_faktur = get_object_or_404(RekapFaktur000, id_pembeli=id_pembeli)
+    nama_pembeli = rekap_faktur.nama_pembeli
+
+    # Lakukan pencarian di model Faktur2022 berdasarkan nama_pembeli
+    faktur_entries = Faktur2022.objects.filter(NAMA_PEMBELI=nama_pembeli)
+    # print(str(faktur_entries.query))
+
+    data_pembeli_list = [
+        {
+            'id_pembeli': entry.ID_PEMBELI,
+            'kd_jns_trx': entry.KD_JNS_TRX,
+            'no_faktur': entry.NO_FAKTUR,
+            'tgl_approval': entry.TGL_APPROVAL,
+            'nama_pembeli': entry.NAMA_PEMBELI,
+            # ... tambahkan atribut lain sesuai kebutuhan
+        }
+        for entry in faktur_entries
+    ]
 
     # Menyusun data untuk dilewatkan ke template
     context = {
@@ -48,6 +64,8 @@ def itemsFaktur(request, nama_pembeli):
     }
 
     return render(request, 'faktur/detail.html', context)
+    
+
 
 # def itemsFaktur(request):
 #     nama_pembeli_data = request.GET.get('nama_pembeli', '')

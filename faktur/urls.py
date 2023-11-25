@@ -6,5 +6,5 @@ app_name = "faktur"
 
 urlpatterns = [
     path('browse/', views.items, name='items'),
-    path('items/<str:nama_pembeli>/', views.itemsFaktur, name='items_faktur'),
+    path('items/<int:id_pembeli>/', views.itemsFaktur, name='items_faktur'),
 ]
