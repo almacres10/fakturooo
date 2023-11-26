@@ -4,11 +4,14 @@
 <div class="pb-6">
 
   <div class="col-span-1 flex items-center justify-center">
-    <form method="get" action="{% url 'faktur:items' %}" class="text-center">
+    <form method="get" action="{% url 'faktur:items' %}" class="text-center" id="main-form">
       <input name="query" class="w-full py-2 px-4 border rounded-lg search-input" type="text" value="{{ query }}" placeholder="Find what you want..">
-      <button class="ml-2 py-2 px-4 text-lg bg-teal-500 text-white rounded-lg">Search</button>
-      <a href="{% url 'faktur:items' %}" class="ml-2 py-2 px-4 text-lg bg-yellow-500 text-white rounded-lg reset-button">Reset</a>
-      {% comment %} <a href="{% url 'faktur:download_items' %}" class="ml-2 py-2 px-4 text-lg bg-slate-500 text-white rounded-lg reset-button">Download</a> {% endcomment %}
+      <button name="cari" class="my-5 ml-2 py-2 px-4 text-lg bg-teal-500 text-white rounded-lg">Cari</button>
+      <button class="my-5 ml-2 py-2 px-4 text-lg bg-yellow-500 text-white rounded-lg">
+        <a href="{% url 'faktur:reset_items' %}">
+            Reset
+        </a>
+    </button>
     </form>
   </div>
 
@@ -17,16 +20,24 @@
     <div>
         {% comment %} {% if query %}
             {% if items %} {% endcomment %}
-                {% for faktur in page_obj %}
                     <div>
                         <tbody>
+                            <table>
+                            {% comment %} {% if cari %} {% endcomment %}
+                            <tr>
+                                <th>Nama Pembeli</th>
+                                <th>Alamat Pembeli</th>
+                            </tr>
+                            {% comment %} {% endif %} {% endcomment %}
+                            {% for faktur in page_obj %}
                             <tr>
                                 <td><a href="{% url 'faktur:items_faktur' faktur.id_pembeli %}">{{ faktur.nama_pembeli }}</a></td>
                                 <td>{{ faktur.alamat_pembeli }}</td>
                             </tr>
+                            {% endfor %}
+                        </table>
                         </tbody>
                     </div>
-                {% endfor %}
             {% comment %} {% else %}
                 <p>No results found.</p>
             {% endif %}
@@ -41,9 +52,11 @@
           <a href="?query={{ request.GET.query|urlencode }}&page={{ page_obj.previous_page_number }}">previous</a>
       {% endif %}
 
+      {% if query %}
       <span class="current">
           Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
       </span>
+      {% endif %}
 
       {% if page_obj.has_next %}
           <a href="?query={{ request.GET.query|urlencode }}&page={{ page_obj.next_page_number }}">next</a>
@@ -58,12 +71,7 @@
   {% endblock %}
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const resetButton = document.querySelector('.reset-button');
-        const searchInput = document.querySelector('.search-input');
-
-        resetButton.addEventListener('click', function () {
-            searchInput.value = '';  // Menghapus nilai dari input pencarian
-        });
-    });
+     function clearForm() {
+        document.getElementById("main-form").reset()
+    } 
 </script>

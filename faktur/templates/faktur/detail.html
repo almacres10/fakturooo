@@ -4,41 +4,34 @@
 
 {% block content %}
   <h2>Daftar Faktur untuk {{ data_pembeli_list.0.NAMA_PEMBELI }}</h2>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Nomor Faktur</th>
-        <th>NAMA PEMBELI</th>
-        <!-- tambahkan kolom lain sesuai kebutuhan -->
-      </tr>
-    </thead>
     <tbody>
-
-
-      {% for pembeli in data_pembeli_list %}
-          <p>{{ pembeli.nama_pembeli }}</p>
-          <!-- Tampilkan data lainnya sesuai kebutuhan -->
-      {% endfor %}
+      <table>
+        <tr>
+          <th>Nomor Faktur</th>
+          <th>NPWP Penjual</th>
+          <th>Nama Penjual</th>
+          <th>Alamat Penjual</th>
+          <th>Nama Pembeli</th>
+          <th>Alamat Pembeli</th>
+          <th>Nama Barang</th>
+          <th>Jumlah PPN</th>
+        </tr>
+        {% for pembeli in data_pembeli_list %}
+        <tr>
+        <td>{{ pembeli.NO_FAKTUR }}</td>
+        <td>{{ pembeli.NPWP_PENJUAL }}</td>
+        <td>{{ pembeli.NAMA_PENJUAL }}</td>
+        <td>{{ pembeli.ALAMAT_PENJUAL }}</td>
+        <td>{{ pembeli.NAMA_PEMBELI }}</td>
+        <td>{{ pembeli.ALAMAT_PEMBELI }}</td>
+        <td>{{ pembeli.NAMA_BARANG }}</td>
+        <td>{{ pembeli.JML_PPN }}</td>
+        {% endfor %}
+        </tr>
+      </table>
     </tbody>
-  </table>
+  
 
-  <!-- Tampilkan pagination jika perlu -->
-  <div class="pagination">
-    <span class="step-links">
-      {% if items.has_previous %}
-        <a href="?page=1">&laquo; first</a>
-        <a href="?page={{ items.previous_page_number }}">previous</a>
-      {% endif %}
-
-      <span class="current">
-        Page {{ items.number }} of {{ items.paginator.num_pages }}.
-      </span>
-
-      {% if items.has_next %}
-        <a href="?page={{ items.next_page_number }}">next</a>
-        <a href="?page={{ items.paginator.num_pages }}">last &raquo;</a>
-      {% endif %}
-    </span>
-  </div>
 {% endblock %}
+
+

@@ -16,6 +16,9 @@ class DetailDataView(DetailView):
     template_name = 'faktur/detail.html'
     context_object_name = 'data'
 
+def resetItems(request):
+    return render(request, 'faktur/items.html')
+
 def items(request):
     query = request.GET.get('query', '')
     items = RekapFaktur000.objects.all()
@@ -48,11 +51,14 @@ def itemsFaktur(request, id_pembeli):
 
     data_pembeli_list = [
         {
-            'id_pembeli': entry.ID_PEMBELI,
-            'kd_jns_trx': entry.KD_JNS_TRX,
-            'no_faktur': entry.NO_FAKTUR,
-            'tgl_approval': entry.TGL_APPROVAL,
-            'nama_pembeli': entry.NAMA_PEMBELI,
+            'NO_FAKTUR': entry.NO_FAKTUR,
+            'NPWP_PENJUAL': entry.NPWP_PENJUAL,
+            'NAMA_PENJUAL': entry.NAMA_PENJUAL,
+            'ALAMAT_PENJUAL': entry.ALAMAT_PENJUAL,
+            'NAMA_PEMBELI': entry.NAMA_PEMBELI,
+            'ALAMAT_PEMBELI': entry.ALAMAT_PEMBELI,
+            'NAMA_BARANG': entry.NAMA_BARANG,
+            'JML_PPN': entry.JML_PPN,
             # ... tambahkan atribut lain sesuai kebutuhan
         }
         for entry in faktur_entries
@@ -65,17 +71,29 @@ def itemsFaktur(request, id_pembeli):
 
     return render(request, 'faktur/detail.html', context)
     
+def download_csv(request, id_pembeli):
+    # Dapatkan objek RekapFaktur000 berdasarkan id_pembeli
+    rekap_faktur = get_object_or_404(RekapFaktur000, id_pembeli=id_pembeli)
 
+    # Dapatkan nilai nama_pembeli dari objek RekapFaktur000
+    nama_pembeli = rekap_faktur.nama_pembeli
 
-# def itemsFaktur(request):
-#     nama_pembeli_data = request.GET.get('nama_pembeli', '')
+    # Lakukan pencarian di model Faktur2022 berdasarkan nama_pembeli
+    faktur_entries = Faktur2022.objects.filter(NAMA_PEMBELI=nama_pembeli)
 
-#     if nama_pembeli_data:
-#         data_pembeli_list = Faktur2022.objects.filter(NAMA_PEMBELI=nama_pembeli_data)
-#         print(data_pembeli_list)  # Tambahkan ini untuk debug
+    # Buat response untuk file CSV
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachment; filename="{nama_pembeli}_faktur.csv"'
 
-#         context = {'data_pembeli_list': data_pembeli_list}
-#         return render(request, 'faktur/detail.html', context)
-#     else:
-#         return render(request, 'faktur/missing_parameter.html')
+    # Buat objek CSV writer
+    csv_writer = csv.writer(response)
+
+    # Tulis header
+    csv_writer.writerow(['ID_PEMBELI', 'KD_JNS_TRX', 'NO_FAKTUR', 'TGL_APPROVAL', '...'])
+
+    # Tulis data
+    for entry in faktur_entries:
+        csv_writer.writerow([entry.ID_PEMBELI, entry.KD_JNS_TRX, entry.NO_FAKTUR, entry.TGL_APPROVAL, '...'])
+
+    return response
 

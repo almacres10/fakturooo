@@ -14,4 +14,4 @@ def index(request):
 
 def user_logout(request):
     logout(request)
-    return redirect('core:index')
+    return redirect('core:login')

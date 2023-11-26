@@ -1,0 +1,97 @@
+body {
+    font-family: 'Quicksand', sans-serif;
+  }
+
+h2{
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    color: black;
+    font-size: 17px;
+}
+.papanInfo{
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    padding-top: 100px ;
+}
+
+.papanInfo-col{
+    flex-basis: 31%;
+    background: fff3f3;
+    border-radius: 10px;
+    margin-bottom: 5%;
+    padding: 20px 12px;
+    box-sizing: border-box;
+    transition: 0.5s;
+}
+
+.papanInfo-col:hover{
+    box-shadow: 0 0 20px 0px rgba(0,0,0,0.2);
+}
+
+.text-box{
+    width: 90%;
+    color: black;
+    position: relative;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.text-box h1{
+    font-size: 62px;
+}
+
+.text-box p{
+    margin: 10px 0 40px;
+    font-size: 14px;
+    color:black;
+}
+
+.hero-btn{
+    display: inline-block;
+    text-decoration: none;
+    color: black;
+    border: 1px solid black;
+    padding: 12px 34px;
+    font-size: 13px;
+    background: transparent;
+    position: relative;
+    cursor: pointer;
+}
+
+.hero-btn:hover{
+    border: 1px solid mediumseagreen;
+    background: mediumseagreen;
+    transition: 1s
+}
+
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  /* Aturan CSS untuk sel header tabel */
+  th {
+    background-color: #4CAF50; /* Warna latar belakang header */
+    color: white; /* Warna teks header */
+    padding: 12px; /* Padding untuk header */
+    text-align: left;
+    font-size: 16px; /* Ukuran huruf header */
+  }
+  
+  /* Aturan CSS untuk sel data */
+  td, th {
+    border: 1px solid #ddd; /* Garis antara sel */
+    padding: 8px; /* Padding untuk sel data */
+    text-align: left;
+    font-size: 12px; /* Ukuran huruf sel data */
+  }
+  
+  /* Aturan CSS untuk hover pada baris */
+  tr:hover {
+    background-color: #f5f5f5; /* Warna latar belakang saat hover */
+  }
