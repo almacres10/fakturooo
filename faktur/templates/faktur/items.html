@@ -11,7 +11,12 @@
         <a href="{% url 'faktur:reset_items' %}">
             Reset
         </a>
-    </button>
+      </button>
+      <button class="my-5 ml-2 py-2 px-4 text-lg bg-rose-500 text-white rounded-lg">
+        <a href="{% url 'faktur:download_csv' page_obj.0.id_pembeli %}">
+            Download
+        </a>
+      </button>
     </form>
   </div>
 
@@ -52,11 +57,9 @@
           <a href="?query={{ request.GET.query|urlencode }}&page={{ page_obj.previous_page_number }}">previous</a>
       {% endif %}
 
-      {% if query %}
       <span class="current">
           Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
       </span>
-      {% endif %}
 
       {% if page_obj.has_next %}
           <a href="?query={{ request.GET.query|urlencode }}&page={{ page_obj.next_page_number }}">next</a>

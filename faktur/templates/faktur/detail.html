@@ -3,6 +3,18 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
+
+{% comment %} {% for pembeli in data_pembeli_list %}
+    <p>{{ pembeli.ID_PEMBELI }}</p>
+{% endfor %} {% endcomment %}
+
+<button class="my-5 ml-2 py-2 px-4 text-lg bg-rose-500 text-white rounded-lg">
+    <a href="{% url 'faktur:download_csv' data_pembeli_list.0.ID_PEMBELI %}">
+        Download CSV
+    </a>
+</button> 
+
+
   <h2>Daftar Faktur untuk {{ data_pembeli_list.0.NAMA_PEMBELI }}</h2>
     <tbody>
       <table>
