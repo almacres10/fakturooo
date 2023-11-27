@@ -8,23 +8,22 @@
 
 <div class="justify-center items-center px-5 flex space-x-4">
     <!-- Dropdown 1 -->
-    <div class="relative inline-block text-left">
+    <div id="select-btn" class="relative inline-block text-left">
         <button id="dropdownButton1" data-dropdown-toggle="dropdownId1" class="text-white bg-emerald-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
             Pilih Kota atau Kabupaten <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
             </svg>
         </button>
-
+    
         <!-- Dropdown menu 1 -->
-        <div id="dropdownId1" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow absolute left-0 mt-2 w-44 dark:bg-gray-700">
-            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownButton1">
-                <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">KOTA PADANG PANJANG</a>
+        <div id="dropdownId1" class="overflow-auto z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow absolute left-0 mt-2 w-44 max-h-40 dark:bg-gray-700">
+            <ul id="optionList" class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownButton1">
+                
+                {% for wilayah in wilayah_list %}
+                <li class="optionItem">
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ wilayah }}</a>
                 </li>
-                <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">KOTA PAYAKUMBUH</a>
-                </li>
-                <!-- Add other items as needed -->
+                {% endfor %}
             </ul>
         </div>
     </div>
@@ -121,7 +120,25 @@
 </div>
 
 <script src="https://unpkg.com/flowbite@1.5.1/dist/flowbite.js"></script>
+<script>
+    const optionMenu = document.querySelector("#select-btn"),
+        selectBtn = optionMenu.querySelector("#dropdownButton1"),
+        options = optionMenu.querySelectorAll(".optionItem"),
+        sBtn_text = optionMenu.querySelector("#dropdownButton1");
 
+    selectBtn.addEventListener("click", () =>
+        optionMenu.classList.toggle("active")
+    );
+
+    options.forEach((option) => {
+        option.addEventListener("click", () => {
+            let selectedOption = option.querySelector("a").innerText;
+            sBtn_text.innerText = selectedOption;
+
+            optionMenu.classList.remove("active");
+        });
+    });
+</script>
 
 {% endblock %}
 

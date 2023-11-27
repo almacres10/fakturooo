@@ -60,4 +60,20 @@ class Faktur2022(models.Model):
     def __str__(self):
         return self.NO_FAKTUR
     
+class RefWilayah(models.Model):
+    ID_WILAYAH = models.AutoField(primary_key=True, null=False)
+    KD_WIL = models.CharField(max_length=100,null=True)
+    KELURAHAN = models.CharField(max_length=100,null=True)
+    KD_KECAMATAN = models.CharField(max_length=100,null=True)
+    KECAMATAN = models.CharField(max_length=100,null=True)
+    KD_KOTA = models.CharField(max_length=100,null=True)
+    KOTA = models.CharField(max_length=100,null=True)
+    KD_PROVINSI = models.CharField(max_length=100,null=True)
+    PROVINSI = models.CharField(max_length=100,null=True)
+    KPPADM = models.CharField(max_length=100,null=True)
 
+    class Meta:
+        db_table = 'ref_wilayah'
+
+    def __str__(self):
+        return self.KD_WIL
