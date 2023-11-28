@@ -1,0 +1,154 @@
+<!-- faktur/per_wilayah.html -->
+
+{% extends 'core/base.html' %} {% block title %}Faktur{% endblock %} 
+{% block content %}
+
+<h2>Data Faktur</h2>
+<p></p>
+
+<div class="justify-center items-center px-5 flex space-x-4">
+    <!-- Dropdown 1 -->
+    <div id="select-btn" class="relative inline-block text-left">
+        <button id="dropdownButton1" data-dropdown-toggle="dropdownId1" class="text-white bg-emerald-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+            Pilih Kota atau Kabupaten <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+            </svg>
+        </button>
+    
+        <!-- Dropdown menu 1 -->
+        <div id="dropdownId1" class="overflow-auto z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow absolute left-0 mt-2 w-44 max-h-40 dark:bg-gray-700">
+            <ul id="optionList" class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownButton1">
+                
+                {% for wilayah in wilayah_list %}
+                <li class="optionItem">
+                    <span class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ wilayah }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Dropdown 2 -->
+    {% comment %} <div id="select-btn" class="relative inline-block text-left">
+        <button id="dropdownButton2" data-dropdown-toggle="dropdownId2" class="text-white bg-emerald-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+            Pilih Kecamatan <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+            </svg>
+        </button> {% endcomment %}
+
+        <!-- Dropdown menu 2 -->
+        {% comment %} <div id="dropdownId2" class="overflow-auto z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow absolute left-0 mt-2 w-44 max-h-40 dark:bg-gray-700">
+            <ul id="optionList" class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownButton2">
+                {% for kecamatan in kecamatan_list %}
+                <li class="optionItem">
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ kecamatan.0 }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div> {% endcomment %}
+
+    <!-- Dropdown 3 -->
+    {% comment %} <div id="select-btn" class="relative inline-block text-left">
+        <button id="dropdownButton3" data-dropdown-toggle="dropdownId3" class="text-white bg-emerald-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+            Pilih Kelurahan <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+            </svg>
+        </button> {% endcomment %}
+
+     <!-- Dropdown menu 3 -->
+        {% comment %} <div id="dropdownId3" class="overflow-auto z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow absolute left-0 mt-2 w-44 max-h-40 dark:bg-gray-700">
+            <ul id="optionList" class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownButton3">
+                {% for kelurahan in kelurahan_list %}
+                <li class="optionItem">
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ kelurahan.0 }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div> {% endcomment %}
+
+    <button id="cariButton" class="my-5 ml-2 py-2 px-4 text-lg bg-lime-500 hover:bg-lime-900 text-white rounded-lg">
+        <a href="">
+            Cari
+        </a>
+    </button>
+
+</div>
+
+
+<form method="post" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+
+
+
+<div class="py-5 px-5">
+  <tbody>
+    <table>
+      <tr>
+        <th>Nama Pembeli</th>
+        <th>Alamat Pembeli</th>
+      </tr>
+      {% for data_item in data %}
+      <tr>
+        <td>
+          <a href="{% url 'faktur:items_faktur' data_item.id_pembeli %}"
+            >{{ data_item.nama_pembeli }}</a
+          >
+        </td>
+        <td>{{ data_item.alamat_pembeli }}</td>
+      </tr>
+      {% endfor %}
+
+      <!-- Tampilkan pagination jika ada lebih dari satu halaman -->
+      {% if data.has_other_pages %}
+      <div class="pagination">
+        <span class="step-links">
+          {% if data.has_previous %}
+          <a href="?page=1">&laquo; first</a>
+          <a href="?page={{ data.previous_page_number }}">previous</a>
+          {% endif %}
+
+          <span class="current">
+            Halaman {{ data.number }} dari {{ data.paginator.num_pages }}.
+          </span>
+
+          {% if data.has_next %}
+          <a href="?page={{ data.next_page_number }}">next</a>
+          <a href="?page={{ data.paginator.num_pages }}">last &raquo;</a>
+          {% endif %}
+        </span>
+      </div>
+      {% endif %}
+    </table>
+  </tbody>
+</div>
+
+<script src="https://unpkg.com/flowbite@1.5.1/dist/flowbite.js"></script>
+<script>
+    const optionMenu = document.querySelector("#select-btn"),
+        selectBtn = optionMenu.querySelector("#dropdownButton1"),
+        options = optionMenu.querySelectorAll(".optionItem"),
+        sBtn_text = optionMenu.querySelector("#dropdownButton1");
+
+    selectBtn.addEventListener("click", () =>
+        optionMenu.classList.toggle("active")
+    );
+
+    options.forEach((option) => {
+        option.addEventListener("click", () => {
+            let selectedOption = option.querySelector("span").innerText;
+            sBtn_text.innerText = selectedOption;
+
+            optionMenu.classList.remove("active");
+        });
+    });
+</script>
+
+
+
+{% endblock %}
+

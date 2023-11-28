@@ -6,7 +6,9 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import csv
-from django.http import Http404
+from django.http import Http404, JsonResponse
+from . forms import PilihWilayah
+
 
 
 
@@ -46,17 +48,16 @@ class CombinedView(TemplateView):
 
         context['data'] = data_list_paginated
 
-        # Mengambil data wilayah dari list
-        wilayah_list = [
-            "KAB. PESISIR SELATAN", "KAB. TANAH DATAR", "KAB. SOLOK", "KAB. SIJUNJUNG",
-            "KAB. PADANG PARIAMAN", "KAB. AGAM", "KAB. LIMA PULUH KOTA", "KAB. PASAMAN",
-            "KAB. KEPULAUAN MENTAWAI", "KAB. PASAMAN BARAT", "KAB. SOLOK SELATAN", "KAB. DHARMASRAYA",
-            "KOTA PADANG", "KOTA PADANG PANJANG", "KOTA BUKITTINGGI", "KOTA PAYAKUMBUH", "KOTA SOLOK",
-            "KOTA PARIAMAN", "KOTA SAWAHLUNTO", "KAB. KERINCI", "KAB. MERANGIN", "KAB. SAROLANGUN",
-            "KAB. BATANGHARI", "KAB. MUARO JAMBI", "KAB. TANJUNG JABUNG TIMUR", "KAB. TANJUNG JABUNG BARAT",
-            "KAB. BUNGO", "KOTA SUNGAI PENUH", "KOTA JAMBI", "KAB. TEBO"
-        ]
+        wilayah_list = RefWilayah.objects.values_list('KOTA', flat=True).distinct()
+        wilayah_list = [wilayah.replace('KAB. ', '').replace('KOTA ', '') for wilayah in wilayah_list]
+
         context['wilayah_list'] = wilayah_list
+
+        kecamatan_list = RefWilayah.objects.values_list('KECAMATAN', 'KOTA').distinct()
+        context['kecamatan_list'] = kecamatan_list
+
+        kelurahan_list = RefWilayah.objects.values_list('KELURAHAN', 'KECAMATAN').distinct()
+        context['kelurahan_list'] = kelurahan_list
 
         return context
 
@@ -146,6 +147,29 @@ def download_csv(request, id_pembeli):
 
     return response
 
-def showWilayah(request):
-    wilayah_list = RefWilayah.objects.all()
-    return render(request, 'faktur/per_wilayah.html', {'wilayah_list': wilayah_list})
+def get_wilayah(request):
+    if request.method == 'GET':
+        form = PilihWilayah(request.GET)
+        if form.is_valid():
+            selected_wilayah = form.cleaned_data['wilayah_field']
+            items = RekapFaktur000.objects.all()
+            items = items.filter(Q(alamat_pembeli__icontains=selected_wilayah))
+
+            items_per_page = 20
+            paginator = Paginator(items, items_per_page)
+            
+            page_number = request.GET.get('page')
+            try:
+                page_obj = paginator.page(page_number)
+            except PageNotAnInteger:
+                page_obj = paginator.page(1)
+            except EmptyPage:
+                page_obj = paginator.page(paginator.num_pages)
+
+            return render(request, 'faktur/per_wilayah.html', {
+                "data": page_obj,
+                "form": form
+            })
+    else:
+        form = PilihWilayah()
+    return render(request, 'faktur/per_wilayah.html', {'form': form})

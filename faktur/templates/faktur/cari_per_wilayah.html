@@ -1,0 +1,19 @@
+<!-- faktur/per_wilayah.html -->
+
+{% extends 'core/base.html' %} {% block title %}Faktur{% endblock %} 
+{% block content %}
+
+<h2>Data Faktur</h2>
+<p></p>
+
+  <!-- Bagian untuk menampilkan formulir pencarian -->
+  <h2>Pilih Wilayah</h2>
+  <form method="get" action="{% url 'faktur:get_wilayah' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Cari</button>
+  </form>
+
+
+{% endblock %}
+

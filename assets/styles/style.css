@@ -7,7 +7,7 @@ h2{
     margin: auto;
     text-align: center;
     color: black;
-    font-size: 17px;
+    font-size: 30px;
 }
 
 subJudul{
@@ -204,3 +204,62 @@ table {
   }
 
   /* ---------------end dropdown menu-------------- */
+
+  /* ---------------forms field-------------------- */
+
+  /* CSS untuk menyesuaikan tampilan dropdown */
+.custom-select {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: left;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border-color: #ccc;
+}
+
+/* Gaya untuk mengubah tampilan dropdown saat dihover */
+.custom-select:hover {
+  border-color: #888;
+}
+
+/* Gaya untuk mengubah tampilan dropdown saat mendapatkan fokus */
+.custom-select:focus {
+  border-color: #555;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  outline: 0;
+}
+
+/* Gaya untuk mengubah tampilan dropdown ketika diaktifkan atau dipilih */
+.custom-select:active,
+.custom-select.active {
+  border-color: #555;
+  background-color: #eee;
+  color: #333;
+}
+
+/* Gaya untuk panah dropdown */
+.custom-select::after {
+  content: "\25BC"; /* panah segitiga turun */
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}
+
+/* Gaya untuk menyesuaikan tampilan dropdown dalam formulir horizontal */
+.custom-select.form-horizontal {
+  width: auto;
+}
+
+
+/* -------------------end forms field----------------------------- */
