@@ -13,3 +13,15 @@ class PilihWilayah(forms.Form):
         widget=forms.Select(attrs={'class': 'custom-select'}),
         label='Pilih salah satu opsi'
     )
+
+# Ambil nilai KECAMATAN dari database dan hilangkan awalan 'KAB.' dan 'KOTA'
+kecamatan_list = RefWilayah.objects.values_list('KECAMATAN', flat=True).distinct()
+
+class PilihWilayahKecamatan(forms.Form):
+    OPTIONS2 = kecamatan_list
+
+    wilayah_kecamatan_field = forms.ChoiceField(
+        choices=OPTIONS2,
+        widget=forms.Select(attrs={'class': 'custom-select'}),
+        label='Pilih salah satu opsi'
+    )

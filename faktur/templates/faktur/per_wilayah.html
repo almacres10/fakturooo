@@ -3,62 +3,13 @@
 {% extends 'core/base.html' %} {% block title %}Faktur{% endblock %} 
 {% block content %}
 
-<!-- Bagian untuk menampilkan hasil filter data -->
-{% if data %}
-  <h2>Hasil Pencarian</h2>
-  <table>
-    <thead>
-        <tr>
-            <th>Nama Pembeli</th>
-            <th>Alamat Pembeli</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in data %}
-        <tr>
-            <td>
-                <a href="{% url 'faktur:items_faktur' item.id_pembeli %}">
-                    {{ item.nama_pembeli }}
-                </a>
-            </td>
-            <td>{{ item.alamat_pembeli }}</td>
-        </tr>
-        <!-- Tambahkan field lain sesuai kebutuhan -->
-        {% endfor %}
-    </tbody>
-  </table>
-
-  <!-- Tampilkan halaman navigasi (jika ada lebih dari satu halaman) -->
-  {% if data.has_other_pages %}
-    <div class="pagination">
-      <span class="step-links">
-        {% if data.has_previous %}
-          <a href="?page=1">&laquo; first</a>
-          <a href="?page={{ data.previous_page_number }}">previous</a>
-        {% endif %}
-
-        <span class="current">
-          Page {{ data.number }} of {{ data.paginator.num_pages }}.
-        </span>
-
-        {% if data.has_next %}
-          <a href="?page={{ data.next_page_number }}">next</a>
-          <a href="?page={{ data.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-      </span>
-    </div>
-  {% endif %}
-  
-{% else %}
-  <!-- Bagian untuk menampilkan formulir pencarian -->
+<!-- Bagian untuk menampilkan formulir pencarian -->
   <h2>Pilih Wilayah</h2>
   <form method="get" action="{% url 'faktur:get_wilayah' %}">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Cari</button>
   </form>
-{% endif %}
-
 
 {% endblock %}
 
