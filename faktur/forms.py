@@ -11,7 +11,7 @@ class PilihWilayah(forms.Form):
     wilayah_field = forms.ChoiceField(
         choices=OPTIONS,
         widget=forms.Select(attrs={'class': 'custom-select'}),
-        label='Pilih salah satu opsi'
+        label='Pilih Kabupaten/Kota'
     )
 
 # Ambil nilai KECAMATAN dari database dan hilangkan awalan 'KAB.' dan 'KOTA'

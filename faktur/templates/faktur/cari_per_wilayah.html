@@ -10,19 +10,21 @@
   <!-- Tampilkan hasil pencarian -->
   <h2 class="text-sm non-italic hover:italic text-slate-900 text-center">Hasil Pencarian</h2>
 
+  <div class="flex justify-end">
   <form method="get" action="{% url 'faktur:download_all_csv' %}">
     {% for key, value in form_data.items %}
       <input type="hidden" name="{{ key }}" value="{{ value }}">
     {% endfor %}
-    <button type="submit class="my-2 ml-2 py-2 px-2 text-lg bg-amber-500 hover:bg-amber-900 text-white rounded-lg>Download CSV</button>
+    <button type="submit" class="my-2 ml-2 py-2 px-2 text-sm bg-red-500 hover:bg-red-900 text-white rounded-lg">Download CSV</button>
   </form>
 
   <form method="get" action="{% url 'faktur:download_all_csv_kecamatan' %}">
     {% for key, value in form_data.items %}
       <input type="hidden" name="{{ key }}" value="{{ value }}">
     {% endfor %}
-    <button type="submit class="my-2 ml-2 py-2 px-2 text-lg bg-amber-500 hover:bg-amber-900 text-white rounded-lg>Download CSV Kecamatan Saja</button>
+    <button type="submit" class="my-2 ml-2 py-2 px-2 text-sm bg-red-500 hover:bg-red-900 text-white rounded-lg">Download CSV Kecamatan Saja</button>
   </form>
+</div>
 
   <table>
     <thead>
@@ -48,24 +50,24 @@
   </table>
   
   <!-- Tampilkan halaman navigasi (jika ada lebih dari satu halaman) -->
-  {% if data.has_other_pages %}
-    <div class="pagination">
-      <span class="step-links">
-        {% if data.has_previous %}
-          <a href="?page=1&wilayah_field={{ form_data.wilayah_field }}">first</a>
-          <a href="?page={{ data.previous_page_number }}&wilayah_field={{ form_data.wilayah_field }}">previous</a>
-        {% endif %}
-  
-        <span class="current">
-          Page {{ current_page_number }} of {{ data.paginator.num_pages }}.
-        </span>
-  
-        {% if data.has_next %}
-          <a href="?page={{ data.next_page_number }}&wilayah_field={{ form_data.wilayah_field }}">next</a>
-          <a href="?page={{ data.paginator.num_pages }}&wilayah_field={{ form_data.wilayah_field }}">last</a>
-        {% endif %}
+{% if data.has_other_pages %}
+  <div class="pagination mt-4">
+    <span class="step-links">
+      {% if data.has_previous %}
+        <a href="?page=1&wilayah_field={{ form_data.wilayah_field }}" class="text-blue-500 hover:underline">first</a>
+        <a href="?page={{ data.previous_page_number }}&wilayah_field={{ form_data.wilayah_field }}" class="text-blue-500 hover:underline">previous</a>
+      {% endif %}
+
+      <span class="current text-blue-500">
+        Page {{ current_page_number }} of {{ data.paginator.num_pages }}.
       </span>
-    </div>
+
+      {% if data.has_next %}
+        <a href="?page={{ data.next_page_number }}&wilayah_field={{ form_data.wilayah_field }}" class="text-blue-500 hover:underline">next</a>
+        <a href="?page={{ data.paginator.num_pages }}&wilayah_field={{ form_data.wilayah_field }}" class="text-blue-500 hover:underline">last</a>
+      {% endif %}
+    </span>
+  </div>
   {% endif %}
 {% endif %}
 

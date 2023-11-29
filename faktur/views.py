@@ -93,7 +93,6 @@ def items(request):
         "page_obj": page_obj
     })
 
-@login_required(login_url='core:login')
 def itemsFaktur(request, id_pembeli):
     rekap_faktur = get_object_or_404(RekapFaktur000, id_pembeli=id_pembeli)
     nama_pembeli = rekap_faktur.nama_pembeli
@@ -111,7 +110,6 @@ def itemsFaktur(request, id_pembeli):
 
     return render(request, 'faktur/detail.html', context)   
 
-@login_required(login_url='core:login')
 def get_data_pembeli_list(nama_pembeli):
     faktur_entries = Faktur2022.objects.filter(NAMA_PEMBELI=nama_pembeli)
     
