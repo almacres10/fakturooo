@@ -1,7 +1,10 @@
-from django.contrib.auth import logout
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from faktur.models import Faktur2022
 from django.views.generic.detail import DetailView
+from . forms import SignupForm
+from . models import User
+
 
 # Create your views here.
 def index(request):
@@ -51,3 +54,16 @@ def user_logout(request):
 
 #     # Handle invalid form
 #     return render(request, 'faktur/cari_per_wilayah.html', {'form': form})
+
+def user_signup(request):
+    form = SignupForm()
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('core:login')
+        else:
+            form = SignupForm()
+
+    return render(request, 'core/signup.html', {'form': form})

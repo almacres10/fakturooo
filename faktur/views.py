@@ -9,6 +9,8 @@ import csv
 from django.http import Http404, JsonResponse
 from . forms import PilihWilayah, PilihWilayahKecamatan
 import time
+from django.contrib.auth.decorators import login_required
+
 
 
 
@@ -24,7 +26,7 @@ import time
 #         # Mengambil seluruh data RekapFaktur000
 #         return RekapFaktur000.objects.all()
 
-
+@login_required(login_url='core:login')
 class CombinedView(TemplateView):
     template_name = 'faktur/per_wilayah.html'
 
@@ -64,9 +66,11 @@ class CombinedView(TemplateView):
 
         return context
 
+@login_required(login_url='core:login')
 def resetItems(request):
     return render(request, 'faktur/items.html')
 
+@login_required(login_url='core:login')
 def items(request):
     query = request.GET.get('query', '')
     items = RekapFaktur000.objects.all()
@@ -89,6 +93,7 @@ def items(request):
         "page_obj": page_obj
     })
 
+@login_required(login_url='core:login')
 def itemsFaktur(request, id_pembeli):
     rekap_faktur = get_object_or_404(RekapFaktur000, id_pembeli=id_pembeli)
     nama_pembeli = rekap_faktur.nama_pembeli
@@ -106,6 +111,7 @@ def itemsFaktur(request, id_pembeli):
 
     return render(request, 'faktur/detail.html', context)   
 
+@login_required(login_url='core:login')
 def get_data_pembeli_list(nama_pembeli):
     faktur_entries = Faktur2022.objects.filter(NAMA_PEMBELI=nama_pembeli)
     
@@ -127,6 +133,7 @@ def get_data_pembeli_list(nama_pembeli):
 
     return data_pembeli_list
 
+@login_required(login_url='core:login')
 def download_csv(request, id_pembeli):
     rekap_faktur = get_object_or_404(Faktur2022, ID_PEMBELI=id_pembeli)
     nama_pembeli = rekap_faktur.NAMA_PEMBELI
@@ -150,10 +157,12 @@ def download_csv(request, id_pembeli):
 
     return response
 
+@login_required(login_url='core:login')
 def form_wilayah(request):
     form = PilihWilayah()
     return render(request, 'faktur/per_wilayah.html', {'form': form})
 
+@login_required(login_url='core:login')
 def get_wilayah(request):
     form = PilihWilayah(request.GET)
 
@@ -186,6 +195,7 @@ def get_wilayah(request):
     # If the form is not valid or it's a POST request, render the template with the form
     return render(request, 'faktur/cari_per_wilayah.html', {'form': form})
 
+@login_required(login_url='core:login')
 def download_all_csv(request):
     # Catat waktu awal eksekusi view
     start_time = time.time()
@@ -235,6 +245,7 @@ def download_all_csv(request):
     # Handle invalid form
     return render(request, 'faktur/cari_per_wilayah.html', {'form': form})
 
+@login_required(login_url='core:login')
 def download_all_csv_kecamatan(request):
     # Catat waktu awal eksekusi view
     start_time = time.time()
