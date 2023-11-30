@@ -4,6 +4,8 @@ from faktur.models import Faktur2022
 from django.views.generic.detail import DetailView
 from . forms import SignupForm
 from . models import User
+import json
+
 
 
 # Create your views here.
@@ -67,3 +69,12 @@ def user_signup(request):
             form = SignupForm()
 
     return render(request, 'core/signup.html', {'form': form})
+
+def chart_view(request):
+    # Mendapatkan data dari model atau sumber data lainnya
+    data = [10, 20, 30, 40, 50]
+
+    # Menyediakan data ke template dalam bentuk JSON
+    context = {'data': json.dumps(data)}
+
+    return render(request, 'core/chart_js.html', context)

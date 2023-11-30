@@ -1,28 +1,29 @@
-<!-- faktur/per_wilayah.html -->
 
-{% extends 'core/base.html' %} {% block title %}Faktur{% endblock %} 
+{% extends 'core/base.html' %} 
+{% block title %}Faktur{% endblock %} 
 {% block content %}
 
-<h1 class="text-2xl non-italic hover:italic text-slate-900 text-center">Data Faktur</h1>
+<h1 class="text-2xl text-slate-900 text-center">Data Faktur</h1>
 <p></p>
 
 {% if data %}
   <!-- Tampilkan hasil pencarian -->
-  <h2 class="text-sm non-italic hover:italic text-slate-900 text-center">Hasil Pencarian</h2>
+  <h2 class="text-sm text-slate-900 text-center">Hasil Pencarian</h2>
 
   <div class="flex justify-end">
-  <form method="get" action="{% url 'faktur:download_all_csv' %}">
+  {% comment %} <form method="get" action="{% url 'faktur:download_all_csv' %}">
     {% for key, value in form_data.items %}
       <input type="hidden" name="{{ key }}" value="{{ value }}">
     {% endfor %}
     <button type="submit" class="my-2 ml-2 py-2 px-2 text-sm bg-red-500 hover:bg-red-900 text-white rounded-lg">Download CSV</button>
-  </form>
+  </form> {% endcomment %}
 
+  {% comment %} Button download CSV yang mengandung kata masing-masing kecamatan di Kota/Kab yang dipilih {% endcomment %}
   <form method="get" action="{% url 'faktur:download_all_csv_kecamatan' %}">
     {% for key, value in form_data.items %}
       <input type="hidden" name="{{ key }}" value="{{ value }}">
     {% endfor %}
-    <button type="submit" class="my-2 ml-2 py-2 px-2 text-sm bg-red-500 hover:bg-red-900 text-white rounded-lg">Download CSV Kecamatan Saja</button>
+    <button type="submit" class="my-2 ml-2 py-2 px-2 text-sm bg-red-500 hover:bg-red-900 text-white rounded-lg">Download CSV</button>
   </form>
 </div>
 
@@ -35,6 +36,7 @@
       </tr>
     </thead>
     <tbody>
+      {% comment %} Context data didapatkan dari fungsi get_data {% endcomment %}
         {% for item in data %}
           <tr>
             <td>{{ data.start_index|add:forloop.counter0 }}</td>

@@ -1,7 +1,8 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html><head>
+<html>
+    <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -10,11 +11,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
     <title>{% block title%} {% endblock %} | App Faktur 000</title>
+    <link rel="icon" type="image/png" href="{% static 'img/python.png' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="flex flex-col min-h-screen">
 
+    {% if request.user.is_authenticated %}
+
     {% include 'core/navbar.html' %}
+
+    {% endif %}
 
     
     
@@ -23,8 +30,8 @@
         {% endblock %}
     </div>
 
-
-
-
+{% comment %} <footer class="text-center py-20 bg-grey-100 text-sm text-slate-400 hover:text-slate-700">
+    &copy : AMC (2023)
+</footer> {% endcomment %}
 </body>
 </html>

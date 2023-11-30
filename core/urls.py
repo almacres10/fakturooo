@@ -15,4 +15,6 @@ urlpatterns = [
     path('home/', views.index, name='index'),
     path('logout/', views.user_logout, name='user_logout'),
     path('signup/', views.user_signup, name='user_signup'),
+    path('chartjs/', views.chart_view, name='chartjs-view'),
+
 ]

@@ -12,20 +12,8 @@ import time
 from django.contrib.auth.decorators import login_required
 
 
-
-
-
-# Create your views here.
-# class DataListView(ListView):
-#     model = RekapFaktur000
-#     template_name = 'faktur/per_wilayah.html'
-#     context_object_name = 'data'
-#     paginate_by = 20  # Menentukan jumlah data per halaman
-
-#     def get_queryset(self):
-#         # Mengambil seluruh data RekapFaktur000
-#         return RekapFaktur000.objects.all()
-
+# Awalnya Class yang dipakai untuk menampilkan banyak data ke satu context
+# Tapi tidak jadi digunakan :)
 @login_required(login_url='core:login')
 class CombinedView(TemplateView):
     template_name = 'faktur/per_wilayah.html'
@@ -66,6 +54,11 @@ class CombinedView(TemplateView):
 
         return context
     
+
+# Fungsi untuk opening pencarian by nama
+# Awalnya untuk menampilkan 20 Data Faktur Pajak dari Model Faktur2022
+# Tapi tidak jadi dipakai, hanya untuk jembatan ke cari_faktur_nama.html
+# Di html tersebut context tidak digunakan
 def cariFakturNama(request):
     latest_faktur = Faktur2022.objects.all()[:20]
     # output = ", ".join([q.NAMA_PEMBELI for q in latest_faktur])
@@ -74,6 +67,10 @@ def cariFakturNama(request):
         }
     return render(request, "faktur/cari_faktur_nama.html", context)
 
+# Fungsi untuk opening pencarian by alamat
+# Awalnya untuk menampilkan 20 Data Faktur Pajak dari Model Faktur2022
+# Tapi tidak jadi dipakai, hanya untuk jembatan ke cari_faktur_nama.html
+# Di html tersebut context tidak digunakan
 def cariFakturAlamat(request):
     latest_faktur = Faktur2022.objects.all()[:20]
     # output = ", ".join([q.NAMA_PEMBELI for q in latest_faktur])
@@ -82,12 +79,16 @@ def cariFakturAlamat(request):
         }
     return render(request, "faktur/cari_faktur_alamat.html", context)
 
+
+# Fungsi untuk reset pencarian
+# Masih dalam tahap penyempurnaan
 @login_required(login_url='core:login')
 def resetItems(request):
     return render(request, 'faktur/items.html')
 
+
+# Fungsi buat cari Item by Nama
 @login_required(login_url='core:login')
-# View buat cari Item by Nama
 def items(request):
     query = request.GET.get('query', '')
     items = RekapFaktur000.objects.all()
@@ -95,9 +96,9 @@ def items(request):
     if query:
         items = items.filter(Q(nama_pembeli__icontains=query))
 
+    # Khusus Paginator, rencana mau dibikin lagi fungsi khusus paginator ini
     items_per_page = 20
-    paginator = Paginator(items, items_per_page)
-    
+    paginator = Paginator(items, items_per_page)   
     page_number = request.GET.get('page')
     try:
         page_obj = paginator.page(page_number)
@@ -110,8 +111,8 @@ def items(request):
         "page_obj": page_obj
     })
 
+# Fungsi buat cari Item by Alamat
 @login_required(login_url='core:login')
-# View buat cari Item by Alamat
 def items2(request):
     query = request.GET.get('query', '')
     items = RekapFaktur000.objects.all()
@@ -121,7 +122,6 @@ def items2(request):
 
     items_per_page = 20
     paginator = Paginator(items, items_per_page)
-    
     page_number = request.GET.get('page')
     try:
         page_obj = paginator.page(page_number)
@@ -134,14 +134,15 @@ def items2(request):
         "page_obj": page_obj
     })
 
+
+# Fungsi untuk mendapatkan detail faktur, dengan mencocokkan id_pembeli dari parameter ke RekapFaktur000
+# Kemudian ambil nama_pembeli yang sama dari Faktur2022 berdasarkan kecocokan di RekapFaktur000
 def itemsFaktur(request, id_pembeli):
     rekap_faktur = get_object_or_404(RekapFaktur000, id_pembeli=id_pembeli)
     nama_pembeli = rekap_faktur.nama_pembeli
 
-    # Lakukan pencarian di model Faktur2022 berdasarkan nama_pembeli
-    faktur_entries = Faktur2022.objects.filter(NAMA_PEMBELI=nama_pembeli)
-    # print(str(faktur_entries.query))
 
+    # Fungsi get_data_pembeli_list ini ada dibawah
     data_pembeli_list = get_data_pembeli_list(nama_pembeli)
 
     # Menyusun data untuk dilewatkan ke template
@@ -151,6 +152,8 @@ def itemsFaktur(request, id_pembeli):
 
     return render(request, 'faktur/detail.html', context)   
 
+
+# Fungsi untuk melakukan filter data nama_pembeli di Faktur2022
 def get_data_pembeli_list(nama_pembeli):
     faktur_entries = Faktur2022.objects.filter(NAMA_PEMBELI=nama_pembeli)
     
@@ -172,6 +175,7 @@ def get_data_pembeli_list(nama_pembeli):
 
     return data_pembeli_list
 
+# Fungsi untuk memdowmload file CSV
 @login_required(login_url='core:login')
 def download_csv(request, id_pembeli):
     rekap_faktur = get_object_or_404(Faktur2022, ID_PEMBELI=id_pembeli)
@@ -196,11 +200,13 @@ def download_csv(request, id_pembeli):
 
     return response
 
+# Fungsi untuk menampilkan form pilih wilayah kabupateb/kota yang mau dicari
 @login_required(login_url='core:login')
 def form_wilayah(request):
     form = PilihWilayah()
     return render(request, 'faktur/per_wilayah.html', {'form': form})
 
+# Fungsi untuk mencari berdasarkan wilayah yang dipilih
 @login_required(login_url='core:login')
 def get_wilayah(request):
     form = PilihWilayah(request.GET)
@@ -229,11 +235,11 @@ def get_wilayah(request):
             "current_page_number": page_obj.number,
         }
 
-        return render(request, 'faktur/cari_per_wilayah.html', context)
+        return render(request, 'faktur/hasil_cari_per_wilayah.html', context)
+    return render(request, 'faktur/hasil_cari_per_wilayah.html', {'form': form})
 
-    # If the form is not valid or it's a POST request, render the template with the form
-    return render(request, 'faktur/cari_per_wilayah.html', {'form': form})
-
+# Fungsi yang tidak jadi dipakai, karena hanya mendownload berdasarkan ada faktur yang mengandung
+# kata kota/kabupaten yang dipilih
 @login_required(login_url='core:login')
 def download_all_csv(request):
     # Catat waktu awal eksekusi view
@@ -282,8 +288,10 @@ def download_all_csv(request):
         return response
 
     # Handle invalid form
-    return render(request, 'faktur/cari_per_wilayah.html', {'form': form})
+    return render(request, 'faktur/hasil_cari_per_wilayah.html', {'form': form})
 
+# Fungsi yang dipakai, karena mendownload berdasarkan ada faktur yang mengandung
+# kata kecamatan berdasarkan kota/kabupaten yang dipilih
 @login_required(login_url='core:login')
 def download_all_csv_kecamatan(request):
     # Catat waktu awal eksekusi view
@@ -339,5 +347,4 @@ def download_all_csv_kecamatan(request):
         
         return response
 
-    # Handle invalid form
-    return render(request, 'faktur/cari_per_wilayah.html', {'form': form})
+    return render(request, 'faktur/hasil_cari_per_wilayah.html', {'form': form})
