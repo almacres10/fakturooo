@@ -1,0 +1,80 @@
+{% extends 'core/base.html' %} 
+{% block title %}Faktur{% endblock %} 
+{% block content %}
+<div class="pb-6">
+
+  <div class="col-span-1 flex items-center justify-center">
+    <form method="get" action="{% url 'faktur:items' %}" class="text-center" id="main-form">
+      <input name="query" class="w-full py-2 px-4 border rounded-lg search-input" type="text" value="{{ query }}" placeholder="Find what you want..">
+      <button name="cari" class="my-5 ml-2 py-2 px-4 text-lg bg-teal-500 text-white rounded-lg">Cari</button>
+      <button class="my-5 ml-2 py-2 px-4 text-lg bg-yellow-500 text-white rounded-lg">
+        <a href="{% url 'faktur:reset_items' %}">
+            Reset
+        </a>
+      </button>
+      <button class="my-5 ml-2 py-2 px-4 text-lg bg-rose-500 text-white rounded-lg">
+        <a href="{% url 'faktur:download_csv' page_obj.0.id_pembeli %}">
+            Download
+        </a>
+      </button>
+    </form>
+  </div>
+
+
+  <div class="col-span-3">
+    <div>
+        {% comment %} {% if query %}
+            {% if items %} {% endcomment %}
+                    <div>
+                        <tbody>
+                            <table>
+                            {% comment %} {% if cari %} {% endcomment %}
+                            <tr>
+                                <th>Nama Pembeli</th>
+                                <th>Alamat Pembeli</th>
+                            </tr>
+                            {% comment %} {% endif %} {% endcomment %}
+                            {% for faktur in page_obj %}
+                            <tr>
+                                <td><a href="{% url 'faktur:items_faktur' faktur.id_pembeli %}">{{ faktur.nama_pembeli }}</a></td>
+                                <td>{{ faktur.alamat_pembeli }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                        </tbody>
+                    </div>
+            {% comment %} {% else %}
+                <p>No results found.</p>
+            {% endif %}
+        {% endif %} {% endcomment %}
+    </div>
+</div>
+
+<div class="pagination">
+  <span class="step-links">
+      {% if page_obj.has_previous %}
+          <a href="?query={{ request.GET.query|urlencode }}&page=1">&laquo; first</a>
+          <a href="?query={{ request.GET.query|urlencode }}&page={{ page_obj.previous_page_number }}">previous</a>
+      {% endif %}
+
+      <span class="current">
+          Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+      </span>
+
+      {% if page_obj.has_next %}
+          <a href="?query={{ request.GET.query|urlencode }}&page={{ page_obj.next_page_number }}">next</a>
+          <a href="?query={{ request.GET.query|urlencode }}&page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+      {% endif %}
+  </span>
+</div>
+
+
+
+
+  {% endblock %}
+
+<script>
+     function clearForm() {
+        document.getElementById("main-form").reset()
+    } 
+</script>

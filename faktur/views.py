@@ -65,12 +65,29 @@ class CombinedView(TemplateView):
         context['kelurahan_list'] = kelurahan_list
 
         return context
+    
+def cariFakturNama(request):
+    latest_faktur = Faktur2022.objects.all()[:20]
+    # output = ", ".join([q.NAMA_PEMBELI for q in latest_faktur])
+    context = {
+        "latest_faktur": latest_faktur,
+        }
+    return render(request, "faktur/cari_faktur_nama.html", context)
+
+def cariFakturAlamat(request):
+    latest_faktur = Faktur2022.objects.all()[:20]
+    # output = ", ".join([q.NAMA_PEMBELI for q in latest_faktur])
+    context = {
+        "latest_faktur": latest_faktur,
+        }
+    return render(request, "faktur/cari_faktur_alamat.html", context)
 
 @login_required(login_url='core:login')
 def resetItems(request):
     return render(request, 'faktur/items.html')
 
 @login_required(login_url='core:login')
+# View buat cari Item by Nama
 def items(request):
     query = request.GET.get('query', '')
     items = RekapFaktur000.objects.all()
@@ -89,7 +106,31 @@ def items(request):
     except EmptyPage:
         page_obj = paginator.page(paginator.num_pages)
 
-    return render(request, 'faktur/items.html', {
+    return render(request, 'faktur/items_by_nama.html', {
+        "page_obj": page_obj
+    })
+
+@login_required(login_url='core:login')
+# View buat cari Item by Alamat
+def items2(request):
+    query = request.GET.get('query', '')
+    items = RekapFaktur000.objects.all()
+
+    if query:
+        items = items.filter(Q(alamat_pembeli__icontains=query))
+
+    items_per_page = 20
+    paginator = Paginator(items, items_per_page)
+    
+    page_number = request.GET.get('page')
+    try:
+        page_obj = paginator.page(page_number)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+
+    return render(request, 'faktur/items_by_alamat.html', {
         "page_obj": page_obj
     })
 

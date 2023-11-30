@@ -1,0 +1,57 @@
+{% if request.user.is_authenticated %}
+<nav class="bg-slate-100">
+    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div class="relative flex h-16 items-center justify-between">
+            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                 <div class="hidden sm:ml-6 sm:block"> 
+                    <div class="flex space-x-4">
+                        <a href="{% url 'core:index' %}" class={% if request.path == '/home/' %} "bg-teal-900 text-white rounded-md px-3 py-2 text-sm font-medium" {% else %} "text-slate-900 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" {% endif %}>Dashboard</a>
+                        <div class="relative inline-block text-left">
+                            <button id="dropdownButton" data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover" 
+                            class={% if request.path == '/faktur/cari/nama' or request.path == '/faktur/cari/alamat' %}
+                            "text-white bg-teal-900 hover:bg-teal-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex 
+                            items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            {%else%}"text-slate-900 bg-slate-100 hover:bg-slate-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex 
+                            items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            {% endif %} type="button">
+                                Cari
+                                <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                                </svg>
+                            </button>
+                            <div id="dropdownMenu" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
+                                <div class="py-1">
+                                    <a href="{% url 'faktur:cari_faktur_nama' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">By Nama WP</a>
+                                    <a href="{% url 'faktur:cari_faktur_alamat' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">By Alamat WP</a>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{% url 'faktur:form_wilayah' %}" class={% if request.path == '/faktur/cari_per_wilayah/' %} "bg-teal-900 text-white rounded-md px-3 py-2 text-sm font-medium" {% else %} "text-slate-900 hover:bg-slate-900 hover:text-white rounded-md px-3 py-2 text-sm font-medium" {% endif %}>Per Wilayah</a>
+                        <a href="{% url 'core:user_logout' %}" class={% if request.path == '/core/user_logout/' %} "bg-teal-900 text-white rounded-md px-3 py-2 text-sm font-medium" {% else %} "text-slate-900 hover:bg-slate-900 hover:text-white rounded-md px-3 py-2 text-sm font-medium" {% endif %}>Log out</a>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</nav>
+{%endif%}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdownButton = document.getElementById('dropdownButton');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        dropdownButton.addEventListener('click', function () {
+            dropdownMenu.classList.toggle('hidden');
+        });
+
+        // Close the dropdown when clicking outside of it
+        document.addEventListener('click', function (event) {
+            if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+    });
+</script>
+
+

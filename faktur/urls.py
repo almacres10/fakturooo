@@ -6,6 +6,9 @@ app_name = "faktur"
 
 urlpatterns = [
     path('', views.items, name='items'),
+    path('alamat/', views.items2, name='items2'),
+    path('cari/nama', views.cariFakturNama, name='cari_faktur_nama'),
+    path('cari/alamat', views.cariFakturAlamat, name='cari_faktur_alamat'),
     path('browse/', views.resetItems, name='reset_items'),
     path('items/<int:id_pembeli>/', views.itemsFaktur, name='items_faktur'),
     path('items/<int:id_pembeli>/download', views.download_csv, name='download_csv'),

@@ -10,6 +10,15 @@ h2{
     font-size: 30px;
 }
 
+.nav-link.active {
+  background-color: #008080; /* Ganti dengan warna yang sesuai */
+  color: #fff; /* Ganti dengan warna yang sesuai */
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
 subJudul{
     width: 100%;
     margin: auto;
