@@ -10,6 +10,8 @@ from django.http import Http404, JsonResponse
 from . forms import PilihWilayah, PilihWilayahKecamatan
 import time
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
+
 
 
 # Awalnya Class yang dipakai untuk menampilkan banyak data ke satu context
@@ -79,6 +81,18 @@ def cariFakturAlamat(request):
         }
     return render(request, "faktur/cari_faktur_alamat.html", context)
 
+# Fungsi untuk opening pencarian by alamat
+# Awalnya untuk menampilkan 20 Data Faktur Pajak dari Model Faktur2022
+# Tapi tidak jadi dipakai, hanya untuk jembatan ke cari_faktur_nama.html
+# Di html tersebut context tidak digunakan
+def cariFakturDetail(request):
+    latest_faktur = Faktur2022.objects.all()[:20]
+    # output = ", ".join([q.NAMA_PEMBELI for q in latest_faktur])
+    context = {
+        "latest_faktur": latest_faktur,
+        }
+    return render(request, "faktur/cari_faktur_detail.html", context)
+
 
 # Fungsi untuk reset pencarian
 # Masih dalam tahap penyempurnaan
@@ -133,14 +147,72 @@ def items2(request):
     return render(request, 'faktur/items_by_alamat.html', {
         "page_obj": page_obj
     })
+    
+# Fungsi buat cari Item by Detail
+@login_required(login_url='core:login')
+def items3(request):
+    query = request.GET.get('query', '')
+    
+    # Lakukan operasi group by pada NAMA_BARANG dan hitung jumlah setiap grup
+    grouped_items = Faktur2022.objects.values('NAMA_BARANG', 'NAMA_PEMBELI', 'ID_PEMBELI').annotate(count=Count('NAMA_BARANG'))
 
+    if query:
+        # Filter data yang memiliki NAMA_BARANG sesuai dengan query
+        grouped_items = grouped_items.filter(Q(NAMA_BARANG__icontains=query))
+
+    items_per_page = 20
+    paginator = Paginator(grouped_items, items_per_page)
+    page_number = request.GET.get('page')
+    try:
+        page_obj = paginator.page(page_number)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+
+    return render(request, 'faktur/items_by_faktur.html', {
+        "page_obj": page_obj
+    })
+
+# Lanjutan Fungsi buat cari Item by Detail
+@login_required(login_url='core:login')
+def items3Next(request, id_pembeli):
+    rekap_faktur = get_object_or_404(RekapFaktur000, id_pembeli=id_pembeli)
+    nama_pembeli = rekap_faktur.nama_pembeli
+
+
+    items_per_page = 20
+    paginator = Paginator(rekap_faktur, items_per_page)
+    page_number = request.GET.get('page')
+    try:
+        page_obj = paginator.page(page_number)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+
+    return render(request, 'faktur/items_by_nama.html', {
+        "page_obj": page_obj
+    })
 
 # Fungsi untuk mendapatkan detail faktur, dengan mencocokkan id_pembeli dari parameter ke RekapFaktur000
 # Kemudian ambil nama_pembeli yang sama dari Faktur2022 berdasarkan kecocokan di RekapFaktur000
 def itemsFaktur(request, id_pembeli):
-    rekap_faktur = get_object_or_404(RekapFaktur000, id_pembeli=id_pembeli)
-    nama_pembeli = rekap_faktur.nama_pembeli
+    try:
+        # Mencoba untuk mendapatkan objek dari model RekapFaktur000
+        rekap_faktur = get_object_or_404(RekapFaktur000, id_pembeli=id_pembeli)
+    except RekapFaktur000.DoesNotExist:
+        try:
+            # Jika objek dari model RekapFaktur000 tidak ditemukan,
+            # mencoba untuk mendapatkan objek dari model Faktur2022
+            rekap_faktur = get_object_or_404(Faktur2022, id_pembeli=id_pembeli)
+        except Faktur2022.DoesNotExist:
+            # Jika kedua model tidak memiliki objek dengan id_pembeli yang diberikan,
+            # raise Http404 untuk menampilkan halaman 404
+            raise Http404("No RekapFaktur000 or Faktur2022 matches the given query.")
 
+    # Jika kita mencapai titik ini, kita telah berhasil mendapatkan objek
+    nama_pembeli = rekap_faktur.nama_pembeli
 
     # Fungsi get_data_pembeli_list ini ada dibawah
     data_pembeli_list = get_data_pembeli_list(nama_pembeli)
@@ -150,7 +222,7 @@ def itemsFaktur(request, id_pembeli):
         'data_pembeli_list': data_pembeli_list,
     }
 
-    return render(request, 'faktur/detail.html', context)   
+    return render(request, 'faktur/detail.html', context)
 
 
 # Fungsi untuk melakukan filter data nama_pembeli di Faktur2022
@@ -174,6 +246,8 @@ def get_data_pembeli_list(nama_pembeli):
     ]
 
     return data_pembeli_list
+
+
 
 # Fungsi untuk memdowmload file CSV
 @login_required(login_url='core:login')
