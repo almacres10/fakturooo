@@ -19,7 +19,7 @@
   </form> {% endcomment %}
 
   {% comment %} Button download CSV yang mengandung kata masing-masing kecamatan di Kota/Kab yang dipilih {% endcomment %}
-  <form method="get" action="{% url 'faktur:download_all_csv_kecamatan' %}">
+  <form method="get" action="{% url 'core:download_all_csv_kecamatan' %}">
     {% for key, value in form_data.items %}
       <input type="hidden" name="{{ key }}" value="{{ value }}">
     {% endfor %}

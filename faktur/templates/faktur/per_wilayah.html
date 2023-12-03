@@ -4,14 +4,14 @@
 
 {% block content %}
   <!-- Bagian untuk menampilkan formulir pencarian -->
-  <h2 class="text-2xl font-bold mb-4">Pilih Wilayah</h2>
+<h2 class="text-2xl font-bold mb-4">Pilih Wilayah</h2>
   <div class='w-1/2 my-6 mx-auto p-6 bg-gray-100 rounded-xl flex justify-center'>
 
-  <form method="get" action="{% url 'faktur:get_wilayah' %}" class="mb-4 justify-center">
-    {% csrf_token %}
-    {{ form.as_p|safe }}
-    <button type="submit" class="bg-blue-300 hover:bg-blue-900 text-white py-2 px-4 rounded">Cari</button>
-  </form>
+    <form method="get" action="{% url 'faktur:get_wilayah' %}" class="mb-4 justify-center">
+      {% csrf_token %}
+      {{ form.as_p|safe }}
+      <button type="submit" class="bg-blue-300 hover:bg-blue-900 text-white py-2 px-4 rounded">Cari</button>
+    </form>
 
   <div>
 {% endblock %}

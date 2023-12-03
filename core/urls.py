@@ -17,5 +17,6 @@ urlpatterns = [
     path('logout/', views.user_logout, name='user_logout'),
     path('signup/', views.user_signup, name='user_signup'),
     path('chartjs/', views.chart_view, name='chartjs-view'),
-    path('summary/', views.summary_view, name='summary_view')
+    path('summary/', views.summary_view, name='summary_view'),
+    path('download_wilayah_csv_kpp/', views.download_all_csv_kecamatan, name='download_all_csv_kecamatan')
 ]
