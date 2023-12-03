@@ -13,6 +13,7 @@ urlpatterns = [
     path('cari/detail', views.cariFakturDetail, name='cari_faktur_detail'),
     path('browse/', views.resetItems, name='reset_items'),
     path('items/<int:id_pembeli>/', views.itemsFaktur, name='items_faktur'),
+    path('items2/<int:id_pembeli>/', views.itemsFaktur2, name='items_faktur2'),
     path('items/<int:id_pembeli>/download', views.download_csv, name='download_csv'),
     path('cari_per_wilayah/', views.form_wilayah, name='form_wilayah'),
     path('hasil_cari_per_wilayah/', views.get_wilayah, name='get_wilayah'),

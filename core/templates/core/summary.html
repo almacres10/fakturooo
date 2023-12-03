@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+
+{% block title %} Welcome {% endblock %}
+
+{% block content %}
+
+<h2 class="text-2xl font-bold mb-4">Pilih KPP</h2>
+<div class='w-1/2 my-6 mx-auto p-6 bg-gray-100 rounded-xl flex justify-center'>
+    <form method="get" action="{% url 'core:cari_per_kpp' %}" class="mb-4 justify-center">
+        {% csrf_token %}
+        {{ form.as_p|safe }}
+        <button type="submit" class="bg-blue-300 hover:bg-blue-900 text-white py-2 px-4 rounded">Cari</button>
+    </form>
+</div>
+
+{% comment %} <div class="mt-8 mb-8">
+    <h1 class="mb-5 text-xl text-center text-slate-900">Summary Rekap Faktur<br>berdasarkan nilai PPN</h1>
+    
+    <table border="1">
+        <tr>
+            <th>Nama Pembeli</th>
+            <th>Alamat Pembeli</th>
+            <th>THPJ</th>
+            <th>Lebar Faktur</th>
+            <th>Nilai DPP</th>
+            <th>Nilai PPN</th>
+        </tr>
+    
+        {% for item in summary_data %}
+            <tr>
+                <td>{{ item.nama_pembeli }}</td>
+                <td>{{ item.alamat_pembeli }}</td>
+                <td>{{ item.thpj }}</td>
+                <td>{{ item.lbr_faktur }}</td>
+                <td>{{ item.nil_dpp }}</td>
+                <td>{{ item.nil_ppn }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div> {% endcomment %}
+
+
+
+{% endblock %}

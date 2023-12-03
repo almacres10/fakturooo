@@ -198,21 +198,22 @@ def items3Next(request, id_pembeli):
 # Fungsi untuk mendapatkan detail faktur, dengan mencocokkan id_pembeli dari parameter ke RekapFaktur000
 # Kemudian ambil nama_pembeli yang sama dari Faktur2022 berdasarkan kecocokan di RekapFaktur000
 def itemsFaktur(request, id_pembeli):
-    try:
-        # Mencoba untuk mendapatkan objek dari model RekapFaktur000
-        rekap_faktur = get_object_or_404(RekapFaktur000, id_pembeli=id_pembeli)
-    except RekapFaktur000.DoesNotExist:
-        try:
-            # Jika objek dari model RekapFaktur000 tidak ditemukan,
-            # mencoba untuk mendapatkan objek dari model Faktur2022
-            rekap_faktur = get_object_or_404(Faktur2022, id_pembeli=id_pembeli)
-        except Faktur2022.DoesNotExist:
-            # Jika kedua model tidak memiliki objek dengan id_pembeli yang diberikan,
-            # raise Http404 untuk menampilkan halaman 404
-            raise Http404("No RekapFaktur000 or Faktur2022 matches the given query.")
-
-    # Jika kita mencapai titik ini, kita telah berhasil mendapatkan objek
+    rekap_faktur = get_object_or_404(RekapFaktur000, id_pembeli=id_pembeli)
     nama_pembeli = rekap_faktur.nama_pembeli
+
+    # Fungsi get_data_pembeli_list ini ada dibawah
+    data_pembeli_list = get_data_pembeli_list(nama_pembeli)
+
+    # Menyusun data untuk dilewatkan ke template
+    context = {
+        'data_pembeli_list': data_pembeli_list,
+    }
+
+    return render(request, 'faktur/detail.html', context)
+
+def itemsFaktur2(request, id_pembeli):
+    rekap_faktur = get_object_or_404(Faktur2022, ID_PEMBELI=id_pembeli)
+    nama_pembeli = rekap_faktur.NAMA_PEMBELI
 
     # Fungsi get_data_pembeli_list ini ada dibawah
     data_pembeli_list = get_data_pembeli_list(nama_pembeli)
@@ -422,3 +423,5 @@ def download_all_csv_kecamatan(request):
         return response
 
     return render(request, 'faktur/hasil_cari_per_wilayah.html', {'form': form})
+
+

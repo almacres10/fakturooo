@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from . models import User
+from faktur.models import RefWilayah
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={
@@ -32,3 +33,11 @@ class SignupForm(UserCreationForm):
         'placeholder': 'Your Password',
         'class': 'w-full py-4 px-6 rounded-xl'
     }))
+
+
+class PilihKPP(forms.Form):
+    wilayah_field = forms.ChoiceField(
+        choices=[('', 'Pilih KPP')] + list(RefWilayah.objects.values_list('KPPADM', 'KPPADM').distinct()),
+        widget=forms.Select(attrs={'class': 'custom-select'}),
+        label='Kode KPP'
+    )

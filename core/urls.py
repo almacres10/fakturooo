@@ -13,8 +13,9 @@ urlpatterns = [
     # path('contact/', views.contact, name='contact'),
     # path('signup/', views.signup, name='signup'),
     path('home/', views.index, name='index'),
+    path('perkpp', views.get_wilayah, name='cari_per_kpp'),
     path('logout/', views.user_logout, name='user_logout'),
     path('signup/', views.user_signup, name='user_signup'),
     path('chartjs/', views.chart_view, name='chartjs-view'),
-
+    path('summary/', views.summary_view, name='summary_view')
 ]
