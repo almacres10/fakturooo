@@ -24,14 +24,18 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser):
     name = models.CharField(max_length=200, null=True)
-    email = models.EmailField(unique=True, null=True)
 
     groups = models.ManyToManyField('auth.Group', related_name='user_groups')
     user_permissions = models.ManyToManyField('auth.Permission', related_name='user_permissions')
 
-    # Mengganti bidang USERNAME_FIELD menjadi 'username'
     USERNAME_FIELD = 'username'
-    # Menambahkan field 'username' ke dalam REQUIRED_FIELDS
-    REQUIRED_FIELDS = ['email', 'name']
+    REQUIRED_FIELDS = ['name']
 
-    objects = UserManager()  # Set the custom manager here
+    objects = UserManager()
+
+class Employee(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    nama_pegawai = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nama_pegawai

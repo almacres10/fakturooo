@@ -36,7 +36,7 @@
                             {% comment %} {% endif %} {% endcomment %}
                             {% for faktur in page_obj %}
                             <tr>
-                                <td><a href="{% url 'faktur:items_faktur2' faktur.ID_PEMBELI%}">{{ faktur.NAMA_PEMBELI }}</a></td>
+                                <td><a href="{% url 'faktur:items_faktur2' faktur.ID_PEMBELI%}" class="hover:text-teal-500">{{ faktur.NAMA_PEMBELI }}</a></td>
                                 <td>{{ faktur.NAMA_BARANG }}</td>
                             </tr>
                             {% endfor %}

@@ -21,7 +21,7 @@ class PilihWilayahKecamatan(forms.Form):
     OPTIONS2 = kecamatan_list
 
     wilayah_kecamatan_field = forms.ChoiceField(
-        choices=OPTIONS2,
+        choices= OPTIONS2,
         widget=forms.Select(attrs={'class': 'custom-select'}),
         label='Pilih salah satu opsi'
     )

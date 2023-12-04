@@ -98,7 +98,7 @@ def cariFakturDetail(request):
 # Masih dalam tahap penyempurnaan
 @login_required(login_url='core:login')
 def resetItems(request):
-    return render(request, 'faktur/items.html')
+    return render(request, 'faktur/items_by_nama.html')
 
 
 # Fungsi buat cari Item by Nama

@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from faktur.models import Faktur2022
 from django.views.generic.detail import DetailView
-from . forms import SignupForm, PilihKPP
+from . forms import SignupForm, PilihKPP, RegistrationForm
 from faktur.models import RekapFaktur000, RefWilayah
 import json
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -11,12 +11,14 @@ from django.http import HttpResponse
 import csv
 import time
 from django.db.models import Count
-
+from django.contrib.auth.decorators import login_required
+from . models import Employee
 
 
 
 
 # Create your views here.
+@login_required(login_url='core:login')
 def index(request):
     latest_faktur = Faktur2022.objects.all()[:20]
     # output = ", ".join([q.NAMA_PEMBELI for q in latest_faktur])
@@ -25,6 +27,7 @@ def index(request):
         }
     return render(request, "core/index.html", context)
 
+@login_required(login_url='core:login')
 def summary_view(request):
     # # Mengambil data RekapFaktur000 dan mengurutkannya berdasarkan nil_ppn secara descending
     # summary_data = RekapFaktur000.objects.order_by('-nil_ppn')[:15]  # Ambil 10 data teratas
@@ -41,6 +44,7 @@ def summary_view(request):
 
     return render(request, 'core/summary.html', context)
 
+@login_required(login_url='core:login')
 def get_wilayah(request):
     form = PilihKPP(request.GET)
     
@@ -82,6 +86,7 @@ def get_wilayah(request):
         return render(request, 'core/hasil_cari_per_wilayah.html', context)
     return render(request, 'core/hasil_cari_per_wilayah.html', {'form': form})
 
+@login_required(login_url='core:login')
 def download_all_csv_kecamatan(request):
     if request.method == 'GET':
         start_time = time.time()
@@ -150,6 +155,20 @@ def user_signup(request):
             form = SignupForm()
 
     return render(request, 'core/signup.html', {'form': form})
+
+def register(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # Buat instance Employee setelah user berhasil dibuat
+            employee = Employee.objects.create(user=user, nama_pegawai=form.cleaned_data['nama_pegawai'])
+            login(request, user)
+            return redirect('core:login')  # Ganti 'home' dengan nama view atau URL yang sesuai
+    else:
+        form = RegistrationForm()
+
+    return render(request, 'core/signup.html/', {'form': form})
 
 def chart_view(request):
     # Mendapatkan data dari model atau sumber data lainnya
