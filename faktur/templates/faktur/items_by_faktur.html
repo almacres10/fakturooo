@@ -4,17 +4,13 @@
 <div class="pb-6">
 
   <div class="col-span-1 flex items-center justify-center">
-    <form method="get" action="{% url 'faktur:items' %}" class="text-center" id="main-form">
+    <form method="get" action="{% url 'faktur:items3' %}" class="text-center" id="main-form">
       <input name="query" class="w-full py-2 px-4 border rounded-lg search-input" type="text" value="{{ query }}" placeholder="Find what you want..">
       <button name="cari" class="my-5 ml-2 py-2 px-4 text-lg bg-teal-500 text-white rounded-lg">Cari</button>
-      <button class="my-5 ml-2 py-2 px-4 text-lg bg-yellow-500 text-white rounded-lg">
-        <a href="{% url 'faktur:reset_items' %}">
-            Reset
-        </a>
-      </button>
+      {% if page_obj.0 and page_obj.0.id_pembeli %}
       <button class="my-5 ml-2 py-2 px-4 text-lg bg-rose-500 text-white rounded-lg">
         <a href="">
-            Download
+          Download
         </a>
       </button>
     </form>
@@ -69,7 +65,9 @@
 </div>
 
 
-
+{% else %}
+<p class="my-5 ml-2 text-lg text-red-500">Data tidak tersedia</p>
+{% endif %}
 
   {% endblock %}
 

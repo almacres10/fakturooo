@@ -18,20 +18,17 @@
 <body class="flex flex-col min-h-screen">
 
     {% if request.user.is_authenticated %}
-
-    {% include 'core/navbar.html' %}
-
+        {% include 'core/navbar.html' %}
     {% endif %}
 
-    
-    
-    <div class="flex-grow px-6 py-6">
+    <div class="flex-grow flex-shrink-0 px-6 py-6">
         {% block content %}
         {% endblock %}
     </div>
-<p>
-<footer class="text-center py-20 bg-grey-100 text-xs text-slate-400 hover:text-slate-700">
-    DP3 - 050 - 2023 <br> simplicity is the ultimate sophistication &copy : AMC (2023)
-</footer>
+
+    {% comment %} <footer class="fixed bottom-0 w-screen h-12 text-center py-20 bg-grey-100 text-xs text-slate-400 hover:text-slate-700">
+        DP3 - 050 - 2023 <br> simplicity is the ultimate sophistication &copy : AMC (2023)
+    </footer> {% endcomment %}
+
 </body>
 </html>

@@ -11,6 +11,8 @@ from . forms import PilihWilayah, PilihWilayahKecamatan
 import time
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
+from django.db import connection
+from django.contrib import messages
 
 
 
@@ -121,8 +123,13 @@ def items(request):
     except EmptyPage:
         page_obj = paginator.page(paginator.num_pages)
 
+    if not items.exists():
+        messages.info(request, 'Data tidak ditemukan.')
+
+
     return render(request, 'faktur/items_by_nama.html', {
-        "page_obj": page_obj
+        "page_obj": page_obj,
+        "query": query,
     })
 
 # Fungsi buat cari Item by Alamat
@@ -145,7 +152,8 @@ def items2(request):
         page_obj = paginator.page(paginator.num_pages)
 
     return render(request, 'faktur/items_by_alamat.html', {
-        "page_obj": page_obj
+        "page_obj": page_obj,
+        "query": query,
     })
     
 # Fungsi buat cari Item by Detail
@@ -171,7 +179,8 @@ def items3(request):
         page_obj = paginator.page(paginator.num_pages)
 
     return render(request, 'faktur/items_by_faktur.html', {
-        "page_obj": page_obj
+        "page_obj": page_obj,
+        "query": query,
     })
 
 # Lanjutan Fungsi buat cari Item by Detail
@@ -274,6 +283,62 @@ def download_csv(request, id_pembeli):
         writer.writerow(entry.values())
 
     return response
+
+# Fungsi untuk memdowmload file CSV berdasarkan nama
+@login_required(login_url='core:login')
+def download_csv_nama(request):
+    # Mendapatkan data yang sesuai dengan query
+    query = request.GET.get('query', '')
+    items = RekapFaktur000.objects.all()
+    
+    if query:
+        items = items.filter(Q(nama_pembeli__icontains=query))
+
+    # Membuat objek CSV
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=all_files.csv'
+
+    # Membuat objek penulis CSV
+    csv_writer = csv.writer(response)
+    
+    # Menulis header CSV, sesuaikan dengan atribut yang ingin Anda sertakan
+    csv_writer.writerow(['Nama Pembeli', 'Alamat Pembeli', 'Tahun Pajak', 'Lembar Faktur', 'Nilai DPP', 'Nilai PPN'])
+
+    # Menulis data ke file CSV
+    for item in items:
+        # Gantilah dengan atribut yang sesuai dengan data yang ingin Anda sertakan
+        csv_writer.writerow([item.nama_pembeli, item.alamat_pembeli, item.thpj, item.lbr_faktur, item.nil_dpp, item.nil_ppn])
+
+    return response
+
+
+# Fungsi untuk memdowmload file CSV berdasarkan alamat
+@login_required(login_url='core:login')
+def download_csv_alamat(request):
+    # Mendapatkan data yang sesuai dengan query
+    query = request.GET.get('query', '')
+    items = RekapFaktur000.objects.all()
+    
+    if query:
+        items = items.filter(Q(alamat_pembeli__icontains=query))
+
+    # Membuat objek CSV
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=all_files.csv'
+
+    # Membuat objek penulis CSV
+    csv_writer = csv.writer(response)
+    
+    # Menulis header CSV, sesuaikan dengan atribut yang ingin Anda sertakan
+    csv_writer.writerow(['Nama Pembeli', 'Alamat Pembeli', 'Tahun Pajak', 'Lembar Faktur', 'Nilai DPP', 'Nilai PPN'])
+
+    # Menulis data ke file CSV
+    for item in items:
+        # Gantilah dengan atribut yang sesuai dengan data yang ingin Anda sertakan
+        csv_writer.writerow([item.nama_pembeli, item.alamat_pembeli, item.thpj, item.lbr_faktur, item.nil_dpp, item.nil_ppn])
+
+    return response
+
 
 # Fungsi untuk menampilkan form pilih wilayah kabupateb/kota yang mau dicari
 @login_required(login_url='core:login')
