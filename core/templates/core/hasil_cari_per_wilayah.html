@@ -19,13 +19,16 @@
   </form> {% endcomment %}
 
   {% comment %} Button download CSV yang mengandung kata masing-masing kecamatan di Kota/Kab yang dipilih {% endcomment %}
-  <form method="get" action="{% url 'core:download_all_csv_kecamatan' %}">
+  <form id="searchForm" method="get" action="{% url 'core:download_all_csv_kecamatan' %}">
     {% for key, value in form_data.items %}
       <input type="hidden" name="{{ key }}" value="{{ value }}">
     {% endfor %}
-    <button type="submit" class="my-2 ml-2 py-2 px-2 text-sm bg-red-500 hover:bg-red-900 text-white rounded-lg">Download CSV</button>
+    <button id="buttonSubmit" type="submit" class="my-2 ml-2 py-2 px-2 text-sm bg-red-500 hover:bg-red-900 text-white rounded-lg">Download CSV</button>
   </form>
 </div>
+
+  <!-- Loader yang akan muncul saat form disubmit -->
+<div id="loader" class="loader" style="display:none;"></div>
 
   <table>
     <thead>
@@ -41,7 +44,7 @@
           <tr>
             <td>{{ data.start_index|add:forloop.counter0 }}</td>
             <td>
-              <a href="{% url 'faktur:items_faktur' item.id_pembeli %}">
+              <a href="{% url 'faktur:items_faktur' item.id_pembeli %}" class="hover:text-teal-500">
                 {{ item.nama_pembeli }}
               </a>
             </td>
@@ -71,6 +74,28 @@
     </span>
   </div>
   {% endif %}
+
+  <script>
+    // Mendeteksi kembali ke halaman
+    window.addEventListener('pageshow', function (event) {
+        // event.persisted akan true jika kembali dari cache (misalnya tombol "Back" pada browser)
+        if (event.persisted) {
+            // Sembunyikan loader
+            document.getElementById("loader").style.display = "none";
+        }
+    });
+
+    document.getElementById("buttonSubmit").addEventListener("click", function () {
+        // Tampilkan loader
+        document.getElementById("loader").style.display = "block";
+        
+        // Sediakan kode lain yang ingin Anda jalankan saat tombol diklik
+        // ...
+
+        // Formulir akan tetap terkirim karena jenis tombolnya adalah "submit"
+    });
+  </script>
+
 {% endif %}
 
 

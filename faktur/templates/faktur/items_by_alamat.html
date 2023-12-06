@@ -3,18 +3,24 @@
 {% block content %}
 <div class="pb-6">
 
-  <div class="col-span-1 flex items-center justify-center">
+  <div class="max-w-md mx-auto bg-white p-6">
     <form method="get" action="{% url 'faktur:items2' %}" class="text-center" id="main-form">
-      <input name="query" class="w-full py-2 px-4 border rounded-lg search-input" type="text" value="{{ query }}" placeholder="Find what you want..">
-      <button name="cari" class="my-5 ml-2 py-2 px-4 text-lg bg-teal-500 text-white rounded-lg">Cari</button>
-      {% if page_obj.0 and page_obj.0.id_pembeli %}
-      <button class="my-5 ml-2 py-2 px-4 text-lg bg-rose-500 text-white rounded-lg">
-        <a href="{% url 'faktur:download_csv_alamat' %}?query={{ query }}">
-          Download
-        </a>
-      </button>
+        <div class="flex items-center mb-4">
+            <input name="query" class="w-full py-2 px-4 border rounded-lg search-input" type="text" value="{{ query }}" placeholder="Find what you want..">
+            <button name="cari" class="ml-2 py-2 px-4 text-lg bg-teal-500 hover:bg-teal-900 text-white rounded-lg">Cari</button>
+        </div>
     </form>
-  </div>
+</div>
+
+
+  <div>
+    {% if page_obj.0 and page_obj.0.id_pembeli %}
+    <button class="my-5 ml-2 py-2 px-4 text-lg bg-rose-500 text-white rounded-lg">
+      <a href="{% url 'faktur:download_csv_alamat' %}?query={{ query }}">
+        Download
+      </a>
+    </button>
+</div>
 
 
   <div class="col-span-3">
@@ -36,7 +42,7 @@
                             {% comment %} {% endif %} {% endcomment %}
                             {% for faktur in page_obj %}
                             <tr>
-                                <td class="bg-gray-100"><a href="{% url 'faktur:items_faktur' faktur.id_pembeli %}" class="hover:text-rose-500">{{ faktur.nama_pembeli }}</a></td>
+                                <td><a href="{% url 'faktur:items_faktur' faktur.id_pembeli %}" class="hover:text-rose-500">{{ faktur.nama_pembeli }}</a></td>
                                 <td>{{ faktur.alamat_pembeli }}</td>
                                 <td>{{ faktur.thpj }}</td>
                                 <td>{{ faktur.lbr_faktur }}</td>

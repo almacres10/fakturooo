@@ -17,6 +17,7 @@ urlpatterns = [
     path('items/<int:id_pembeli>/download', views.download_csv, name='download_csv'),
     path('items/download/nama', views.download_csv_nama, name='download_csv_nama'),
     path('items/download/alamat', views.download_csv_alamat, name='download_csv_alamat'),
+    path('items/download/faktur', views.download_csv_faktur, name='download_csv_faktur'),
     path('cari_per_wilayah/', views.form_wilayah, name='form_wilayah'),
     path('hasil_cari_per_wilayah/', views.get_wilayah, name='get_wilayah'),
     path('cari_wp_by_detail/', views.items3Next, name="cari_wp_by_detail"),

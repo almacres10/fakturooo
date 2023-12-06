@@ -6,11 +6,37 @@
   <!-- Bagian untuk menampilkan formulir pencarian -->
   <h2 class="text-2xl font-bold mb-4">Pilih Wilayah</h2>
   <div class='w-1/2 my-6 mx-auto p-6 bg-gray-100 rounded-xl flex justify-center'>
-      <form method="get" action="{% url 'faktur:get_wilayah' %}" class="mb-4 justify-center">
+      <form id="searchForm" method="get" action="{% url 'faktur:get_wilayah' %}" class="mb-4 justify-center">
           {% csrf_token %}
           {{ form.as_p|safe }}
-          <button type="submit" class="bg-blue-300 hover:bg-blue-900 text-white py-2 px-4 rounded">Cari</button>
+          <button id="buttonSubmit" type="submit" class="bg-blue-300 hover:bg-blue-900 text-white py-2 px-4 rounded">Cari</button>
       </form>
   
   </div>
+
+
+  <!-- Loader yang akan muncul saat form disubmit -->
+<div id="loader" class="loader" style="display:none;"></div>
+
+<script>
+    // Mendeteksi kembali ke halaman
+    window.addEventListener('pageshow', function (event) {
+        // event.persisted akan true jika kembali dari cache (misalnya tombol "Back" pada browser)
+        if (event.persisted) {
+            // Sembunyikan loader
+            document.getElementById("loader").style.display = "none";
+        }
+    });
+
+    document.getElementById("buttonSubmit").addEventListener("click", function () {
+        // Tampilkan loader
+        document.getElementById("loader").style.display = "block";
+        
+        // Sediakan kode lain yang ingin Anda jalankan saat tombol diklik
+        // ...
+
+        // Formulir akan tetap terkirim karena jenis tombolnya adalah "submit"
+    });
+</script>
+
 {% endblock %}

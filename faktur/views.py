@@ -112,6 +112,8 @@ def items(request):
     if query:
         items = items.filter(Q(nama_pembeli__icontains=query))
 
+    # items = items.order_by('-nil_dpp')
+
     # Khusus Paginator, rencana mau dibikin lagi fungsi khusus paginator ini
     items_per_page = 20
     paginator = Paginator(items, items_per_page)   
@@ -242,15 +244,35 @@ def get_data_pembeli_list(nama_pembeli):
     data_pembeli_list = [
         {
             'ID_PEMBELI' : entry.ID_PEMBELI,
+            'KD_JNS_TRX' : entry.KD_JNS_TRX,
+            'ID_STS_PENGGANTI' : entry.ID_STS_PENGGANTI,
             'NO_FAKTUR': entry.NO_FAKTUR,
+            'TGL_APPROVAL': entry.TGL_APPROVAL,
+            'TGL_FAKTUR': entry.TGL_FAKTUR,
+            'ID_STS_FAKTUR': entry.ID_STS_FAKTUR,
+            'FG_UANG_MUKA': entry.FG_UANG_MUKA,
             'NPWP_PENJUAL': entry.NPWP_PENJUAL,
             'NAMA_PENJUAL': entry.NAMA_PENJUAL,
             'ALAMAT_PENJUAL': entry.ALAMAT_PENJUAL,
+            'ID_JNS_WP_PENJUAL': entry.ID_JNS_WP_PENJUAL,
+            'KPPADM_PENJUAL': entry.KPPADM_PENJUAL,
+            'KD_KLU_PENJUAL': entry.KD_KLU_PENJUAL,
             'NAMA_PEMBELI': entry.NAMA_PEMBELI,
             'ALAMAT_PEMBELI': entry.ALAMAT_PEMBELI,
+            'ID_JNS_WP_PEMBELI': entry.ID_JNS_WP_PEMBELI,
+            'KPPADM_PEMBELI': entry.KPPADM_PEMBELI,
+            'KD_KLU_PEMBELI': entry.KD_KLU_PEMBELI,
+            'ID_FP_PENGGANTI': entry.ID_FP_PENGGANTI,
+            'JML_BARANG': entry.JML_BARANG,
             'NAMA_BARANG': entry.NAMA_BARANG,
+            'HARGA_SATUAN': entry.HARGA_SATUAN,
+            'HARGA_TOTAL': entry.HARGA_TOTAL,
+            'DISKON': entry.DISKON,
+            'JML_DPP': entry.JML_DPP,
             'JML_PPN': entry.JML_PPN,
-            # ... tambahkan atribut lain sesuai kebutuhan
+            'JML_PPNBM': entry.JML_PPNBM,
+            'TARIF_PPNBM': entry.TARIF_PPNBM,
+            'KODE_OBJEK': entry.KODE_OBJEK,
         }
         for entry in faktur_entries
     ]
@@ -336,6 +358,33 @@ def download_csv_alamat(request):
     for item in items:
         # Gantilah dengan atribut yang sesuai dengan data yang ingin Anda sertakan
         csv_writer.writerow([item.nama_pembeli, item.alamat_pembeli, item.thpj, item.lbr_faktur, item.nil_dpp, item.nil_ppn])
+
+    return response
+
+# Fungsi untuk memdowmload file CSV berdasarkan alamat
+@login_required(login_url='core:login')
+def download_csv_faktur(request):
+    # Mendapatkan data yang sesuai dengan query
+    query = request.GET.get('query', '')
+    items = Faktur2022.objects.all()
+    
+    if query:
+        items = items.filter(Q(NAMA_BARANG__icontains=query))
+
+    # Membuat objek CSV
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=csv_files_detail_faktur.csv'
+
+    # Membuat objek penulis CSV
+    csv_writer = csv.writer(response)
+    
+    # Menulis header CSV, sesuaikan dengan atribut yang ingin Anda sertakan
+    csv_writer.writerow(['Nama Pembeli', 'Nama Barang', 'Nilai PPN'])
+
+    # Menulis data ke file CSV
+    for item in items:
+        # Gantilah dengan atribut yang sesuai dengan data yang ingin Anda sertakan
+        csv_writer.writerow([item.NAMA_PEMBELI, item.NAMA_BARANG, item.JML_PPN])
 
     return response
 
