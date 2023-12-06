@@ -1,0 +1,21 @@
+{% if messages %}
+    {% for message in messages %}
+        {% if 'success' in message.tags %}
+            <div id="msg" class="bg-teal-500 text-white px-4 py-2 mb-2 rounded">
+                {{ message }}
+            </div>
+        {% elif 'danger' in message.tags %}
+            <div id="msg" class="bg-rose-500 text-white px-4 py-2 mb-2 rounded">
+                {{ message }}
+            </div>
+        {% elif 'warning' in message.tags %}
+            <div id="msg" class="bg-lime-500 text-white px-4 py-2 mb-2 rounded">
+                {{ message }}
+            </div>
+        {% else %}
+            <div id="msg" class="bg-gray-500 text-white px-4 py-2 mb-2 rounded">
+                {{ message }}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}

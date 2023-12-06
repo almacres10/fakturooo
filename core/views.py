@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from faktur.models import Faktur2022
 from django.views.generic.detail import DetailView
-from . forms import SignupForm, PilihKPP, RegistrationForm
+from . forms import SignupForm, PilihKPP, RegistrationForm, LoginForm
 from faktur.models import RekapFaktur000, RefWilayah
 import json
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -13,6 +13,7 @@ import time
 from django.db.models import Count
 from django.contrib.auth.decorators import login_required
 from . models import Employee
+from django.contrib import messages
 
 
 
@@ -25,6 +26,7 @@ def index(request):
     context = {
         "latest_faktur": latest_faktur,
         }
+    
     return render(request, "core/index.html", context)
 
 @login_required(login_url='core:login')
@@ -141,6 +143,7 @@ def download_all_csv_kecamatan(request):
 
 def user_logout(request):
     logout(request)
+    messages.success(request, 'Berhasil logout.')
     return redirect('core:login')
 
 def user_signup(request):
@@ -164,11 +167,35 @@ def register(request):
             # Buat instance Employee setelah user berhasil dibuat
             employee = Employee.objects.create(user=user, nama_pegawai=form.cleaned_data['nama_pegawai'])
             login(request, user)
+            messages.success(request, 'Berhasil registrasi. Silakan coba login')
+
             return redirect('core:login')  # Ganti 'home' dengan nama view atau URL yang sesuai
     else:
         form = RegistrationForm()
 
     return render(request, 'core/signup.html/', {'form': form})
+
+def login_view(request):
+    if request.method == 'POST':
+        form = LoginForm(request, request.POST)  # Use your custom LoginForm
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+                messages.success(request, 'Berhasil login.')
+                return redirect('core:index')  # Replace with the desired redirect URL
+            
+            else:
+                messages.warning(request, 'username atau password anda salah')
+                return redirect('core:login')
+
+    else:
+        form = LoginForm()
+
+    return render(request, 'core/login.html', {'form': form})
 
 def chart_view(request):
     # Mendapatkan data dari model atau sumber data lainnya

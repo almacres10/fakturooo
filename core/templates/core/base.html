@@ -13,6 +13,8 @@
     <title>{% block title%} {% endblock %} | App Faktur 000</title>
     <link rel="icon" type="image/png" href="{% static 'img/python.png' %}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 </head>
 
 <body class="flex flex-col min-h-screen">
@@ -22,6 +24,8 @@
     {% endif %}
 
     <div class="flex-grow flex-shrink-0 px-6 py-6">
+        {% include 'core/messages.html' %}
+
         {% block content %}
         {% endblock %}
     </div>
@@ -29,6 +33,16 @@
     <footer class="bottom-0 w-screen h-12 text-center py-20 bg-grey-100 text-xs text-slate-400 hover:text-slate-700">
         DP3 - 050 - 2023 <br> simplicity is the ultimate sophistication &copy : AMC (2023)
     </footer> 
+
+    <script>
+        setTimeout(function() {
+            if ($('#msg').length > 0) {
+                $('#msg').remove();
+            }
+        }, 2000);
+    </script>
+    
+
 
 </body>
 </html>
