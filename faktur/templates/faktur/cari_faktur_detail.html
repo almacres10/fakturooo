@@ -6,7 +6,8 @@
 
   {% comment %} Form ini meneruskan value GET (yang diketik) ke fungsi items2 {% endcomment %}
   <form id="searchForm" method="get" action="{% url 'faktur:items3' %}">
-    <input name="query" class="min-w-full py-4 px-6 border rounded-xl" type="text" value="{{ query }}" placeholder="Input yang ingin anda cari..">
+    <input name="query" class="min-w-full py-4 px-6 border rounded-xl" type="text" value="{{ query }}" placeholder="Input yang ingin anda cari.."
+    autocomplete="off">
 
     <button id="buttonSubmit" type="submit" class="flex mt-2 py-4 px-8 text-lg bg-teal-800 text-white rounded-xl hover:bg-teal-500 mx-auto">Search</button>
 </form>

@@ -153,6 +153,9 @@ def items2(request):
     except EmptyPage:
         page_obj = paginator.page(paginator.num_pages)
 
+    if not items.exists():
+        messages.info(request, 'Data tidak ditemukan.')
+
     return render(request, 'faktur/items_by_alamat.html', {
         "page_obj": page_obj,
         "query": query,
@@ -179,6 +182,9 @@ def items3(request):
         page_obj = paginator.page(1)
     except EmptyPage:
         page_obj = paginator.page(paginator.num_pages)
+
+    if not items.exists():
+        messages.info(request, 'Data tidak ditemukan.')
 
     return render(request, 'faktur/items_by_faktur.html', {
         "page_obj": page_obj,
@@ -318,7 +324,7 @@ def download_csv_nama(request):
 
     # Membuat objek CSV
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=all_files.csv'
+    response['Content-Disposition'] = 'attachment; filename=all_files_nama.csv'
 
     # Membuat objek penulis CSV
     csv_writer = csv.writer(response)
@@ -330,6 +336,8 @@ def download_csv_nama(request):
     for item in items:
         # Gantilah dengan atribut yang sesuai dengan data yang ingin Anda sertakan
         csv_writer.writerow([item.nama_pembeli, item.alamat_pembeli, item.thpj, item.lbr_faktur, item.nil_dpp, item.nil_ppn])
+
+    messages.success(request, 'File berhasil didownload.')
 
     return response
 
