@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'faktur',
     'core',
     'assets',
+    'django.contrib.humanize',
 ]
 
 AUTH_USER_MODEL = 'core.User'

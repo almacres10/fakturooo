@@ -1,4 +1,5 @@
 {% extends 'core/base.html' %} 
+{% load humanize %}
 {% block title %}Faktur{% endblock %} 
 {% block content %}
 <div class="pb-6">
@@ -49,8 +50,8 @@
                                 <td>{{ faktur.alamat_pembeli }}</td>
                                 <td>{{ faktur.thpj }}</td>
                                 <td>{{ faktur.lbr_faktur }}</td>
-                                <td>{{ faktur.nil_dpp }}</td>
-                                <td>{{ faktur.nil_ppn }}</td>
+                                <td>{{ faktur.nil_dpp|floatformat:"2"|intcomma }}</td>
+                                <td>{{ faktur.nil_ppn|floatformat:"2"|intcomma }}</td>
                             </tr>
                             {% endfor %}
                         </table>

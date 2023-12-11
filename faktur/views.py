@@ -183,7 +183,7 @@ def items3(request):
     except EmptyPage:
         page_obj = paginator.page(paginator.num_pages)
 
-    if not items.exists():
+    if not grouped_items.exists():
         messages.info(request, 'Data tidak ditemukan.')
 
     return render(request, 'faktur/items_by_faktur.html', {

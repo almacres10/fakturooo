@@ -1,16 +1,26 @@
-{% extends 'core/base.html' %} {% block title %}Faktur{% endblock %} 
+{% extends 'core/base.html' %} 
+{% block title %}Faktur{% endblock %} 
 {% block content %}
 
 <div class="mt-6 px-6 py-12 bg-gray-200 rounded-xl">
     <h2 class="mb-12 text-4xl text-center text-slate-900">Cari Berdasarkan Nama</h2>
 
-    {% comment %} Form ini meneruskan value GET (yang diketik) 
-    ke fungsi items
-    {% endcomment %}
     <form id="searchForm" method="get" action="{% url 'faktur:items' %}">
-        <input name="query" class="min-w-full py-4 px-6 border rounded-xl" 
+        <input name="query" class="min-w-full py-4 px-6 mb-5 border rounded-xl" 
         type="text" value="{{  query }}"
         placeholder="Input yang ingin anda cari.." autocomplete="off">
+
+        <div class="flex flex-col items-center">
+            <label for="tahun" class="mb-2">Pilih Tahun:</label>
+            <select name="tahun" id="tahun" class="min-w-0 py-2 px-6 border rounded-xl bg-teal-100">
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <!-- Tambahkan opsi tahun lainnya jika diperlukan -->
+            </select>
+        </div>
+        
+        
+
         <button id="buttonSubmit" type="submit" class="flex mt-2 py-4 px-8 text-lg bg-teal-800 text-white rounded-xl hover:bg-teal-500 mx-auto">Search</button>
     </form>
 </div>
@@ -44,6 +54,5 @@
         // Formulir akan tetap terkirim karena jenis tombolnya adalah "submit"
     });
 </script>
-
 
 {% endblock %}

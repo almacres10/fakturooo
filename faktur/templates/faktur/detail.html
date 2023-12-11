@@ -1,6 +1,7 @@
 <!-- faktur/detail.html -->
 
 {% extends 'core/base.html' %}
+{% load humanize %}
 
 {% block content %}
 
@@ -37,7 +38,7 @@
         <td>{{ pembeli.NAMA_PEMBELI }}</td>
         <td>{{ pembeli.ALAMAT_PEMBELI }}</td>
         <td>{{ pembeli.NAMA_BARANG }}</td>
-        <td>{{ pembeli.JML_PPN }}</td>
+        <td>{{ pembeli.JML_PPN|floatformat:"2"|intcomma }}</td>
         {% endfor %}
         </tr>
       </table>
