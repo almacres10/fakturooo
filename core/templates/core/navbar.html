@@ -29,6 +29,7 @@
                         </div>
                         <a href="{% url 'core:summary_view' %}" class={% if  '/summary/' in request.path or 'perkpp' in request.path %} "bg-teal-900 text-white rounded-md px-3 py-2 text-sm font-medium" {% else %} "text-slate-900 hover:bg-slate-900 hover:text-white rounded-md px-3 py-2 text-sm font-medium" {% endif %}>Per KPP</a>
                         <a href="{% url 'faktur:form_wilayah' %}" class={% if 'hasil_cari_per_wilayah' in request.path or '/faktur/cari_per_wilayah/' in request.path %} "bg-teal-900 text-white rounded-md px-3 py-2 text-sm font-medium" {% else %} "text-slate-900 hover:bg-slate-900 hover:text-white rounded-md px-3 py-2 text-sm font-medium" {% endif %}>Per Wilayah</a>
+                        <a href="" class={% if 'hasil_cari_per_wilayah' in request.path or '/faktur/cari_per_wilayah/' in request.path %} "bg-teal-900 text-white rounded-md px-3 py-2 text-sm font-medium" {% else %} "text-slate-900 hover:bg-slate-900 hover:text-white rounded-md px-3 py-2 text-sm font-medium" {% endif %}>Masterfile</a>
                         <a href="{% url 'core:user_logout' %}" class={% if request.path == '/core/user_logout/' %} "bg-teal-900 text-white rounded-md px-3 py-2 text-sm font-medium" {% else %} "text-slate-900 hover:bg-slate-900 hover:text-white rounded-md px-3 py-2 text-sm font-medium" {% endif %}>Log out</a>
                     </div>
                 </div>
